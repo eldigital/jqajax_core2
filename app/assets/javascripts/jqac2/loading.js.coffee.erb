@@ -1,0 +1,56 @@
+window.JqAjaxCore2.Loading =
+  
+  showLoading: ->
+    @overlay().height($("body").height());
+    @overlay().width($("body").width());
+    
+    # Center the info container
+    info = $(@overlay().children()[0])
+    
+    w_info = info.width()
+    h_info = info.height()
+    w_window = $(window).width()
+    h_window = $(window).height()
+    
+    info.css({left: (w_window*0.5)-(w_info*0.5)+"px" })
+    info.css({top: (h_window*0.5)-(h_info*0.5)+"px" })
+    
+    @overlay().fadeIn(200);
+    
+  hideLoading: ->
+    @overlay().fadeOut(200);
+  
+  # get the overlay
+  overlay: ->
+    $("#<%= JqajaxCore2::Config.overlay[:div_id] %>")
+    
+  # get The flash Area
+  flashArea: ->
+    $('#<%= JqajaxCore2::Config.loading[:flash_area_div] %>')  
+  
+  # Flash Notify Tools
+  flashNoticeDisplay: (text, mode) ->
+    
+    
+    mode = mode || 'ok'
+    text = text.replace(/\'/g, "\"")
+    html_notice = "<div class='jqac2-notify " + mode + "' style='display:none'>" + text + "</div>"
+    
+    
+    
+    @flashArea().html(html_notice)
+    @flashArea().children().slideDown(500)
+    window.setTimeout('JqAjaxCore2.Loading.flashFadeOut()', 5000)
+    
+
+  flashFadeOut: ->
+    @flashArea().children().fadeOut(500)
+  
+
+  loadAjaxFlashNotice: ->
+  	$.getJSON '/jqca2/jqac2_flash', (data) ->
+      $(data).each ->
+  			@flashNoticeDisplay(this[1], this[0])
+  		
+  
+      

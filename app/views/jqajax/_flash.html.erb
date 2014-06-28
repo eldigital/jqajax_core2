@@ -1,0 +1,9 @@
+<%# flash[:notice] & flash[:error] display %>
+<div id="<%= JqajaxCore2::Config.loading[:flash_area_div] %>" class="">
+  <% if !flash[:notice].blank? %>
+    <%= javascript_tag("JqAjaxCore2.Loading.flashNoticeDisplay('#{flash[:notice]}', 'ok')") %>
+  <% end %>
+  <% if !flash[:error].blank? %>
+    <%= javascript_tag("JqAjaxCore2.Loading.flashNoticeDisplay('#{flash[:error]}', 'error')") %>
+  <% end %>
+</div>

@@ -1,0 +1,134 @@
+//= FRIENDS AJAX CORE HELPER FUNCTIONS
+//= 	Loader Anzeigen
+//
+//== 	Ajax Load Message:
+// 		Anzeige einer Box mit Loader und Message
+ajaxLoadMessage = function(target, message){
+	message = message || '<%= HTML_LOAD_DEFAULT.to_s %>'
+	message_target = $("#"+target);
+	
+	loader_id = "loader-"+randomString()
+	html_string = "<div id='" + loader_id +"' class='rounded ajax-load-box'><img src='/assets/icons/loader-16.png'/>" + message +"</div>";
+	
+	
+	message_target.children().fadeTo(500, 0.3)
+	
+	message_target.append(html_string);
+	
+	loader = $("#"+loader_id)
+	
+	// Abemessung berechnen
+	loader_width = loader.width()
+	loader_height = loader.height()
+	
+	message_target.css({position: "relative", "min-height": loader_height+"px"})
+	
+	target_width	= message_target.width()
+	target_height	= message_target.height()
+	
+	if(message_target.height() > window.innerHeight){
+		loader.css({left: ((target_width/2)-(loader_width/2))+"px", top: (loader_height)+"px", position: "absolute"})
+	}else{
+		loader.css({left: ((target_width/2)-(loader_width/2))+"px", top: ((target_height/2)-(loader_height/2))+"px", position: "absolute"})
+	}	
+	
+	
+	loader.show();
+	
+	
+	
+}
+
+//==	TinyLoadMessage
+// 		Anzeige Loader mit Message ohne Box
+tinyAjaxLoadMessage = function(target, message){
+	message = message || '<%= HTML_TINY_LOAD_DEFAULT.to_s %>'
+	message_target = $("#"+target);
+	message_target.children().hide();
+	message_target.append("<img src='/assets/content-elements/ajax-loader.gif' width='16px' height='16px'/> " + message);
+}
+
+progressAjaxLoadMessage = function(target, message){
+	message = message || '<%= HTML_TINY_LOAD_DEFAULT.to_s %>'
+	message_target = $("#"+target);
+	message_target.children().hide();
+	message_target.append("<div class='text-center'><div class='spacer-small'>" +  message +"</div><img src='/assets/content-elements/ajax-bar.gif'/></div>");
+}
+
+//==	Cursor Loader
+// 		Blendet den Mauszeiger aus und 
+// 		... coming soon
+
+
+
+
+// Element ausblenden - verwendung als Callback nach löschen etc...
+hideItem = function(id){
+	$("#"+id).fadeOut(300);
+}
+
+
+// Element löschen - verwendung als Callback nach löschen etc...
+removeItem = function(id){
+	$("#"+id).remove();
+}
+
+
+
+
+
+// JavaScript Makeover of Rails 2.3 'remote_function' helper
+remote_function = function(path_url, div, load_message, submit, load_text){
+  if(typeof submit != 'undefined' && submit != '') {
+    
+    submit = ("#"+submit).replace("##", "#")
+    request_data = $(submit).serialize();
+    request_type = "post"
+    
+  }else{
+    request_data = 'authenticity_token=' + AUTH_TOKEN
+    request_type = "get"
+  }
+  
+	div = div || '<%= AJAX_OVERLAY_CONTAINER_NAME %>'
+	$.ajax({
+		success:function(request){
+			
+			$('#'+div).html(request);
+
+			hideLoading();
+			initAllAjaxTools();
+      loadAjaxFlashNotice();
+		},
+    
+		beforeSend: function(data){
+			if(load_message != false){
+				if(load_message == true){
+					ajaxLoadMessage(div);
+				}else if(load_message == 'tiny'){
+				  tinyAjaxLoadMessage(div, load_text);
+				}else if(load_message == 'progress'){
+				  progressAjaxLoadMessage(div, load_text);
+				}
+				else{
+					showLoading();
+				}
+			}else{
+			}
+		},
+    
+		url:  path_url,
+		data: request_data,
+		type: request_type 
+	});
+}
+
+
+
+parseJsonDate = function(jsonDate) { 
+  date_parts = /(\d{4})-(\d{2})-(\d{2}).(\d{2}):(\d{2})/.exec(jsonDate)
+  realDate = new Date(parseInt(date_parts[1]), parseInt(date_parts[2], 10)-1, parseInt(date_parts[3], 10), parseInt(date_parts[4], 10), parseInt(date_parts[5], 10));
+  return realDate;
+};
+
+

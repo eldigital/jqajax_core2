@@ -1,0 +1,10 @@
+<% id = "I#{Digest::SHA1.hexdigest(params.inspect)}" %>
+<div class="<%= INFO_OVERLAY_CLASS %> rounded invisible" id="<%= id %>">
+  <%= image_tag "icons/icon-close.png", :class => "close-link", :onclick => "$('##{id}').slideUp(200);" %>
+  <div class="info-overlay-content">
+    <div class="bold overlay-title"><%= @page_title %></div>
+    <%= yield %>
+  </div>
+</div>
+
+<%= render :partial => '/layouts/overlay_js', :locals => {:mode => :info, :id => id} %>

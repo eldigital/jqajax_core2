@@ -1,0 +1,38 @@
+window.JqAjaxCore2.Helpers =
+
+linkOptionsFromElement: (item) =>
+  # Item is passed as $() object
+  item = $(item)
+  link_options = {};
+  
+  link_options['target_div']        =   item.attr('<%= JqajaxCore2::Config.core[:update_div] %>')      || '<%= AJAX_OVERLAY_CONTAINER_NAME %>'
+  link_options['load_message']      =   false
+  link_options['hide_load_message'] =   false
+  link_options['tiny_loader']       =   false
+  link_options['submit_data']       =   item.attr('<%= AJAX_SUBMIT_DATA_TRIGGER %>')  || ''
+  link_options['callback']          =   item.attr('<%= HTML_DATA_CALLBACK %>')        || ''
+  link_options['append']            =   item.attr('<%= HTML_DATA_APPEND %>') ? true : false
+  
+  css_attributes = $(item.attr('class').split(" "))
+  
+  css_attributes.each (i) =>
+    if css_attributes[i].match("<%= AJAX_HIDE_LOAD_MESSAGE_SELECTOR %>")
+      link_options['hide_load_message'] =  true
+    else if css_attributes[i].match("<%= AJAX_LOAD_MESSAGE_TRIGGER %>") 
+      link_options['load_message']  =  true
+    else if css_attributes[i].match("<%= AJAX_TINY_LOAD_TRIGGER %>") 
+      link_options['tiny_loader']   =  true
+      link_options['load_message']  =  false
+     
+  if link_options['load_message'] == true
+  	link_options['load_message_text'] =  $(item).attr('<%= HTML_DATA_LOADING %>')  
+  
+  
+  return link_options
+  
+  
+  
+  
+  
+  
+  

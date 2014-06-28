@@ -1,0 +1,85 @@
+window.JqAjaxCore2= {} if typeof(window.JqAjaxCore2) is 'undefined'
+
+window.JqAjaxCore2.Core =
+  
+  # initialisierung des Default Links
+  initDefaultLink: ->
+  	# Default Ajax Link, formerly known as 'ajax_default_link'-Helper
+  	# Data will be automatically rendered into ajax overlay container, after showing loading message
+  	# add 'update-div-...' to set custom div to render data in!
+    
+    unloadedLinks = $("a.<%= JqajaxCore2::Config.core[:ajax_link_class] %>.<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>, form.<%= JqajaxCore2::Config.core[:ajax_link_class] %>.<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>")
+    
+    # XHR Data Handler - beforeSend
+    # Loading information should be displayed
+    
+    unloadedLinks.bind 'ajax:beforeSend', (xhr,settings) ->
+      link_options = JqAjaxCore2.Helpers.linkOptionsFromElement(this)
+      
+      if link_options['hide_load_message'] != true
+      	if link_options['load_message'] == true && link_options['target_div'] != ""
+      		ajaxLoadMessage(link_options['target_div'], link_options['load_message_text'])	
+      	else if link_options['tiny_loader'] == true && link_options['target_div'] != ""
+      		tinyAjaxLoadMessage(link_options['target_div'])
+      	else
+      		JqAjaxCore2.Loading.showLoading()
+       
+      # Checking if data should be submitted
+      if link_options['submit_data'] != ''
+        form_data = jQuery("#" + link_options['submit_data'] + " :input").serialize()
+        settings.data = form_data
+
+
+  	# XHR Data Handler - Success
+    # The response should be handled and placed in the content
+  	
+    unloadedLinks.bind 'ajax:success', (xhr, data, status) ->
+      link_options = JqAjaxCore2.Helpers.linkOptionsFromElement($(this))
+      
+      if link_options['append'] == true
+        $("#"+link_options['target_div']).append(data)
+      else 
+        $("#"+link_options['target_div']).html(data)
+    
+        JqAjaxCore2.Loading.hideLoading()
+        
+		
+    		if link_options['callback'] != ''
+    			eval(link_options['callback'])
+  		
+    
+  	# XHR Data Handler - Error
+    #
+    unloadedLinks.bind 'ajax:error', (xhr, status, error) ->
+      
+      <% if Rails.env == 'development' %>
+        flashNoticeDisplay("Error - see log for Details", 'error')
+      <% end %>	
+      
+      JqAjaxCore2.Loading.hideLoading()
+      
+      
+    
+    unloadedLinks.removeClass("<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>");
+    
+
+  
+ 
+  initSelectOnchange: ->
+  	# Default Ajax Link, formerly known as 'ajax_default_link'-Helper
+  	# Data will be automatically rendered into ajax overlay container, after showing loading message
+  	# add 'update-div-...' to set custom div to render data in!
+    
+    select_actions = $("select.<%= JqajaxCore2::Config.core[:select_onchange_selector] %>.<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>");
+    select_actions.change ->
+      #Daten zusammenladen
+      link_options = linkOptionsFromClassName(this);
+      
+      # Url erstellen
+      url = $(this).attr('<%= HTML_DATA_TARGET_URL %>').replace('<%= HTML_URL_VALUE_PLACEHOLDER %>', this.value);
+      
+      # Feuer frei
+      remote_function(url, link_options['target_div'], link_options['load_message'] == true, link_options['submit_data']);
+      
+    select_actions.removeClass("<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>")
+  
