@@ -21,6 +21,9 @@ JqajaxCore2::Config.core[:ajax_content_container_id] ||= "jqac2-ajax-content"
 # Placeholder string in URLS
 JqajaxCore2::Config.core[:url_placeholder]  ||= ".-."
 
+# Confirmation
+JqajaxCore2::Config.core[:confirm_default]  ||= "Sind Sie sicher das Sie fortfahren möchten?"
+
 #== Overlay and Loader Settings
 JqajaxCore2::Config.overlay[:div_id]      ||= "#{p}-overlay"
 JqajaxCore2::Config.overlay[:hide_label]  ||= "ausblenden"
@@ -55,9 +58,10 @@ JqajaxCore2::Config.html_data[:callback]    ||= "data-#{p}-callback"
 # $.append() or $.html()
 JqajaxCore2::Config.html_data[:append]      ||= "data-#{p}-append"
 
+# Field for confirmation content
+JqajaxCore2::Config.html_data[:confirm] ||= "data-#{p}-confirm"
 
-
-
+JqajaxCore2::Config.html_data[:target_url] ||= "data-#{p}-target-url"
 
 
 # Trigger for showing load message box
@@ -78,11 +82,6 @@ JqajaxCore2::Config.html_data[:append]      ||= "data-#{p}-append"
 
 
 
-#== Data Types (HTML 5 data-attribute)
-# Bestätigung per confirm
-::HTML_DATA_CONFIRM             = "data-jqac2-confirm"
-::HTML_CONFIRM_DEFAULT          = "Sind Sie sicher?"
-
 # Nachricht für loadMessage
 ::HTML_DATA_LOADING             = "data-jqac2-loading"
 ::HTML_LOAD_DEFAULT             = "Daten werden geladen"
@@ -90,10 +89,6 @@ JqajaxCore2::Config.html_data[:append]      ||= "data-#{p}-append"
 
 
 
-#== Forms - Triggers for select onchange etc
-
-# Ziel URL als HTML5-Data
-::HTML_DATA_TARGET_URL          = "data-jqac2-target-url"
 
 
 

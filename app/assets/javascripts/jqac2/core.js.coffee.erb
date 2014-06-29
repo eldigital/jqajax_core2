@@ -16,6 +16,11 @@ window.JqAjaxCore2.Core =
     unloadedLinks.bind 'ajax:beforeSend', (xhr,settings) ->
       link_options = JqAjaxCore2.Helpers.linkOptionsFromElement(this)
       
+      console.log(link_options)
+      
+      if link_options['confirm'] == true
+        return confirm link_options['confirm_message']
+      
       if link_options['hide_load_message'] != true
       	if link_options['load_message'] == true && link_options['target_div'] != ""
       		ajaxLoadMessage(link_options['target_div'], link_options['load_message_text'])	
@@ -75,8 +80,11 @@ window.JqAjaxCore2.Core =
       #Daten zusammenladen
       link_options = linkOptionsFromClassName(this);
       
+      if link_options['confirm'] == true
+        return confirm link_options['confirm_message']
+      
       # Url erstellen
-      url = $(this).attr('<%= HTML_DATA_TARGET_URL %>').replace('<%= JqajaxCore2::Config.core[:url_placeholder] %>', this.value);
+      url = $(this).attr('<%= JqajaxCore2::Config.html_data[:target_url] %>').replace('<%= JqajaxCore2::Config.core[:url_placeholder] %>', this.value);
       
       # Feuer frei
       remote_function(url, link_options['target_div'], link_options['load_message'] == true, link_options['submit_data']);
