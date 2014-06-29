@@ -19,4 +19,11 @@ module JqajaxViewHelper
   end    
   
   
+  
+  def jqajax_modal(options = {}, &block)
+    options[:draggable] = JqajaxCore2::Config.modal[:draggable]
+    render "/jqajax/modal", :options => options, :content => capture(&block)
+  end  
+  
+  
 end  

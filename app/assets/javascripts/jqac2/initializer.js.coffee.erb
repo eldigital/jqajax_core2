@@ -1,0 +1,27 @@
+window.JqAjaxCore2.Initializer =
+  initJqAc2: ->
+    JqAjaxCore2.Core.initDefaultLink()
+    JqAjaxCore2.Core.initSelectOnchange()
+
+#== Initalize
+# Regular JS
+$(document).ready ->
+  JqAjaxCore2.Initializer.initJqAc2()
+  return
+
+# Turbolinks JS
+$(document).on 'page:load', ->
+  JqAjaxCore2.Initializer.initJqAc2()
+  return
+
+#== Load info between page reloads  
+<% if JqajaxCore2::Config.overlay[:enable_on_page_unload] %>      
+  # Regular JS
+  $(document).on 'page:before-change', -> 
+    JqAjaxCore2.Loading.showLoading()
+    return
+  # Turbolinks JS
+  $(window).bind "beforeunload", -> 
+    JqAjaxCore2.Loading.showLoading()
+    return
+<% end %>  

@@ -1,0 +1,82 @@
+window.JqAjaxCore2.Modal = 
+  
+  # Init position of overlay Modal
+  initModal: (id) ->
+    overlay = $("#"+id)
+    overlay.hide()
+  
+    dwidth  = window.innerWidth
+    dheight = window.innerHeight
+    
+    max_width  = dwidth   * <%= JqajaxCore2::Config.modal[:max_width_factor] %>   + 'px'
+    max_height = dheight  * <%= JqajaxCore2::Config.modal[:max_height_factor] %>  + 'px'
+    
+    overlay.css({'max-width': max_width, 'max-height': max_height})
+    
+    owidth  = overlay.width()
+    oheight = overlay.height()
+    
+    dimensions =
+      left:  ((dwidth * 0.5)-(owidth * 0.5))+'px'
+      top:   ((dheight* 0.5)-(oheight* 0.5))+'px'
+      height: (oheight+25)+'px'
+      position: 'fixed'
+    
+    overlay.css(dimensions);
+    overlay.fadeIn(500);
+    
+    @initModelZindexSetter(id)
+    
+  
+  # Z-Index setzen
+  # Modal Z-Index Setter
+  # Bring modal to front if clicked
+  initModelZindexSetter: (id) ->
+    overlay = $("#"+id)
+    
+    zindexes = []
+    
+    $("div.<%= JqajaxCore2::Config.modal[:css_class] %>").each ->
+      zindexes.push(parseInt($(this).css('z-index')))
+
+    zindex_max = parseInt(zindexes.sort().reverse()[0])
+
+    # neues Overlay z-index setzen
+    overlay.css('z-index', zindex_max+1)
+    zindex_max = parseInt(overlay.css('z-index'))
+	  
+    $('#'+overlay .attr('id')).bind 'click', ->
+      $(this).css('z-index', zindex_max+1)
+      zindex_max = parseInt($(this).css('z-index'))
+      
+  setModalDraggable: (id) ->
+    overlay = $("#"+id)
+    
+    overlay.draggable
+      handle: ".<%= JqajaxCore2::Config.modal[:drag_handle] %>"
+      stop: (event, ui) -> 
+        $(this).css("top",ui.position.top).css("left",ui.position.left)
+  
+  hideModal: (id) ->
+    $("#"+id).slideUp()
+  
+ 
+  #
+  #// Ajax Fullscreen Overlay
+  #setAjaxFullscreen = function(id){
+  #
+  #  overlay = $("#"+id);
+  #
+  #  dwidth  = window.innerWidth
+  #  dheight = window.innerHeight
+  #
+  #  overlay.css({'width': (dwidth*0.9)+'px', 'height': (dheight*0.8)+'px'});
+  #
+  #    // 
+  #  // overlay.animate({left: "0px", top: "49px", width: ($(document).width())+"px", height: (window.outerHeight-154)+"px"}, 200);
+  #  // overlay.css("max-width", "100%");
+  #
+  #}
+
+  
+  

@@ -17,16 +17,16 @@ module JqajaxCoreHelper
     options[:class] << " #{AJAX_TINY_LOAD_TRIGGER}" if options[:tiny_loader] == true
     
     if options[:submit]
-      link_data.merge!(AJAX_SUBMIT_DATA_TRIGGER => options[:submit])
+      link_data.merge!(JqajaxCore2::Config.html_data[:submit_data] => options[:submit])
     end  
     
     # Callbacks/JS
     if options[:callback]
-      link_data.merge!(HTML_DATA_CALLBACK => options[:callback])
+      link_data.merge!(JqajaxCore2::Config.html_data[:callback] => options[:callback])
     end  
     
     if options[:append] == true
-      link_data.merge!(HTML_DATA_APPEND => true)
+      link_data.merge!(JqajaxCore2::Config.html_data[:append] => true)
     end  
     
     # Confirm-Message setzen: Entweder default, oder eigene Nachricht
@@ -38,22 +38,16 @@ module JqajaxCoreHelper
       end    
     end  
     
-    
-      if options[:push_progress] == true
-        options[:load_message] = false
-        options[:class] << " #{AJAX_PUSH_PROGRESS_TRIGGER}"
-      end  
       
-      
-      # Load-Message setzen: Entweder default oder eigene Nachricht
-      if options[:load_message] && (options[:load_message] != false && !options[:load_message].blank?)
-        options[:class] << " #{AJAX_LOAD_MESSAGE_TRIGGER}"
-        if options[:load_message].is_a?(String)
-          link_data.merge!(HTML_DATA_LOADING.to_s => options[:load_message])
-        end    
-      elsif options[:load_message] == false
-        options[:class]   << " #{AJAX_HIDE_LOAD_MESSAGE_SELECTOR}"
-      end  
+    # Load-Message setzen: Entweder default oder eigene Nachricht
+    if options[:load_message] && (options[:load_message] != false && !options[:load_message].blank?)
+      options[:class] << " #{AJAX_LOAD_MESSAGE_TRIGGER}"
+      if options[:load_message].is_a?(String)
+        link_data.merge!(HTML_DATA_LOADING.to_s => options[:load_message])
+      end    
+    elsif options[:load_message] == false
+      options[:class]   << " #{AJAX_HIDE_LOAD_MESSAGE_SELECTOR}"
+    end  
     
     link_data.merge!(:class => options[:class])
     link_data.merge!(:id    => options[:id])
@@ -77,36 +71,36 @@ module JqajaxCoreHelper
     options[:class] << " #{AJAX_TINY_LOAD_TRIGGER}" if options[:tiny_loader] == true
     
     if options[:submit]
-      link_data.merge!(AJAX_SUBMIT_DATA_TRIGGER => options[:submit])
+      link_data.merge!(JqajaxCore2::Config.html_data[:submit_data] => options[:submit])
     end
     
     options[:with] ||= :id  
     if options[:with]  
-      options[:url].merge!(options[:with] => HTML_URL_VALUE_PLACEHOLDER)
+      options[:url].merge!(options[:with] => JqajaxCore2::Config.core[:url_placeholder])
     end  
     
     if options[:url]
       link_data.merge!(HTML_DATA_TARGET_URL.to_s => url_for(options[:url]))
     end
     
-     # Confirm-Message setzen: Entweder default, oder eigene Nachricht
-      if options[:confirm]
-        if options[:confirm] = true
-          link_data.merge!(:confirm => HTML_CONFIRM_DEFAULT.to_s)
-        else
-          link_data.merge(:confirm => options[:confirm])
-        end    
-      end  
+    # Confirm-Message setzen: Entweder default, oder eigene Nachricht
+    if options[:confirm]
+      if options[:confirm] = true
+        link_data.merge!(:confirm => HTML_CONFIRM_DEFAULT.to_s)
+      else
+        link_data.merge(:confirm => options[:confirm])
+      end    
+    end  
 
-      # Load-Message setzen: Entweder default oder eigene Nachricht
-      if options[:load_message] && (options[:load_message] != false && !options[:load_message].blank?)
-        options[:class] << " #{AJAX_LOAD_MESSAGE_TRIGGER}"
-        if options[:load_message].is_a?(String)
-          link_data.merge!(HTML_DATA_LOADING.to_s => options[:load_message])
-        end    
-      elsif options[:load_message] == false
-        options[:class]   << " #{AJAX_HIDE_LOAD_MESSAGE_SELECTOR}"
-      end
+    # Load-Message setzen: Entweder default oder eigene Nachricht
+    if options[:load_message] && (options[:load_message] != false && !options[:load_message].blank?)
+      options[:class] << " #{AJAX_LOAD_MESSAGE_TRIGGER}"
+      if options[:load_message].is_a?(String)
+        link_data.merge!(HTML_DATA_LOADING.to_s => options[:load_message])
+      end    
+    elsif options[:load_message] == false
+      options[:class]   << " #{AJAX_HIDE_LOAD_MESSAGE_SELECTOR}"
+    end
     
     link_data.merge!(:class => options[:class])
     link_data.merge!(:id    => options[:id])
@@ -130,10 +124,10 @@ module JqajaxCoreHelper
     open = options[:open] #|| (session[:slidedown_boxes_open].include?(box_session_id) rescue false)
     
     concat raw("<div class='js-slide-down-box  plain #{'open' if open} #{options[:box_class]} #{options[:class]}' data-session-id='#{box_session_id}'>
-          <#{options[:type]} class='#{options[:default_class]} js-slidedown-button'>
-            #{title}
-          </#{options[:type]}>
-          <div class='js-slidedown-content'>") 
+    <#{options[:type]} class='#{options[:default_class]} js-slidedown-button'>
+    #{title}
+    </#{options[:type]}>
+    <div class='js-slidedown-content'>") 
     yield
     concat raw("</div></div>")  
   end

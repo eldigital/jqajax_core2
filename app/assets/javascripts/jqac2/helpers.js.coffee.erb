@@ -5,13 +5,13 @@ linkOptionsFromElement: (item) =>
   item = $(item)
   link_options = {};
   
-  link_options['target_div']        =   item.attr('<%= JqajaxCore2::Config.core[:update_div] %>')      || '<%= AJAX_OVERLAY_CONTAINER_NAME %>'
+  link_options['target_div']        =   item.attr('<%= JqajaxCore2::Config.core[:update_div] %>')  || '<%= JqajaxCore2::Config.core[:ajax_content_container_id] %>'
   link_options['load_message']      =   false
   link_options['hide_load_message'] =   false
   link_options['tiny_loader']       =   false
-  link_options['submit_data']       =   item.attr('<%= AJAX_SUBMIT_DATA_TRIGGER %>')  || ''
-  link_options['callback']          =   item.attr('<%= HTML_DATA_CALLBACK %>')        || ''
-  link_options['append']            =   item.attr('<%= HTML_DATA_APPEND %>') ? true : false
+  link_options['submit_data']       =   item.attr('<%= JqajaxCore2::Config.html_data[:submit_data] %>')  || ''
+  link_options['callback']          =   item.attr('<%= JqajaxCore2::Config.html_data[:callback] %>')     || ''
+  link_options['append']            =   item.attr('<%= JqajaxCore2::Config.html_data[:append] %>') ? true : false
   
   css_attributes = $(item.attr('class').split(" "))
   

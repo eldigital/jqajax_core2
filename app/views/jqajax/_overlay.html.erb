@@ -1,4 +1,7 @@
-<!-- Loading Overlay -->
+<%# Default content Container %>
+<div id="<%= JqajaxCore2::Config.core[:ajax_content_container_id] %>"></div>
+
+<%# Loading Overlayer %>
 <div id="<%= JqajaxCore2::Config.overlay[:div_id] %>" style="display:none">
   <div class="overlay-content-box" onmousedown="JqAjaxCore2.Loading.hideLoading();">
     <div class="overlay-loader"><%= image_tag(JqajaxCore2::Config.loading[:loader_img]) %></div>

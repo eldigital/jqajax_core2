@@ -1,0 +1,14 @@
+<% id = "I#{Digest::SHA1.hexdigest(params.inspect)}" %>
+<div class="<%= JqajaxCore2::Config.modal[:css_class] %> rounded" id="<%= id %>">
+  <%= image_tag JqajaxCore2::Config.modal[:close_icon_img], :class => "close-link", :onclick => "JqAjaxCore2.Modal.hideModal('#{id}')" %>
+  <div class="info-overlay-content">
+    <%= content %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  JqAjaxCore2.Modal.initModal('<%= id %>')
+  <% if options[:draggable] %>
+    JqAjaxCore2.Modal.setModalDraggable('<%= id %>')
+  <% end %>  
+</script>

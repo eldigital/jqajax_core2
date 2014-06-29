@@ -53,7 +53,7 @@ window.JqAjaxCore2.Core =
     unloadedLinks.bind 'ajax:error', (xhr, status, error) ->
       
       <% if Rails.env == 'development' %>
-        flashNoticeDisplay("Error - see log for Details", 'error')
+        JqAjaxCore2.Loading.flashNoticeDisplay("Error - see log for Details", 'error')
       <% end %>	
       
       JqAjaxCore2.Loading.hideLoading()
@@ -76,7 +76,7 @@ window.JqAjaxCore2.Core =
       link_options = linkOptionsFromClassName(this);
       
       # Url erstellen
-      url = $(this).attr('<%= HTML_DATA_TARGET_URL %>').replace('<%= HTML_URL_VALUE_PLACEHOLDER %>', this.value);
+      url = $(this).attr('<%= HTML_DATA_TARGET_URL %>').replace('<%= JqajaxCore2::Config.core[:url_placeholder] %>', this.value);
       
       # Feuer frei
       remote_function(url, link_options['target_div'], link_options['load_message'] == true, link_options['submit_data']);

@@ -1,5 +1,5 @@
 <% id = "I#{Digest::SHA1.hexdigest(params.inspect)}" %>
-<div class="<%= INFO_OVERLAY_CLASS %> rounded" id="<%= id %>">
+<div class="<%= JqajaxCore2::Config.modal[:css_class] %> rounded" id="<%= id %>">
   <%= image_tag "icons/icon-close.png", :class => "close-link", :onclick => "$('##{id}').slideUp(200);" %>
   <div class="info-overlay-content">
     <%= yield %>

@@ -1,5 +1,0 @@
-<% id = "A#{Digest::SHA1.hexdigest(Time.now.to_s + rand(1000).to_s)}" %>
-<% ajax_overlay(id) do %>
-  <%= yield %>
-<% end %>  
-<%= render :partial => '/layouts/overlay_js', :locals => {:mode => :ajax, :id => id} %>

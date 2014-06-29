@@ -1,21 +1,24 @@
 window.JqAjaxCore2.Loading =
   
   showLoading: ->
-    @overlay().height($("body").height());
-    @overlay().width($("body").width());
+    <% if JqajaxCore2::Config.overlay[:enable] == true %>
+      @overlay().height($("body").height());
+      @overlay().width($("body").width());
     
-    # Center the info container
-    info = $(@overlay().children()[0])
+      # Center the info container
+      info = $(@overlay().children()[0])
     
-    w_info = info.width()
-    h_info = info.height()
-    w_window = $(window).width()
-    h_window = $(window).height()
+      w_info = info.width()
+      h_info = info.height()
+      w_window = $(window).width()
+      h_window = $(window).height()
     
-    info.css({left: (w_window*0.5)-(w_info*0.5)+"px" })
-    info.css({top: (h_window*0.5)-(h_info*0.5)+"px" })
+      info.css({left: (w_window*0.5)-(w_info*0.5)+"px" })
+      info.css({top: (h_window*0.5)-(h_info*0.5)+"px" })
     
-    @overlay().fadeIn(200);
+      @overlay().fadeIn(200);
+    <% end %>
+
     
   hideLoading: ->
     @overlay().fadeOut(200);
@@ -53,4 +56,5 @@ window.JqAjaxCore2.Loading =
   			@flashNoticeDisplay(this[1], this[0])
   		
   
-      
+
+
