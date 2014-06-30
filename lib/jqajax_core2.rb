@@ -3,7 +3,6 @@ require "jqajax_core2/config"
 
 # Prefix
 p = 'jqac2'
-puts "Setting default"
 #== Core Settings
 # Default ajax link class names
 JqajaxCore2::Config.core[:ajax_link_class]    ||= "#{p}-default-link"
