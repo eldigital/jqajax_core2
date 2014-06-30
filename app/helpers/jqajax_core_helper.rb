@@ -26,6 +26,8 @@ module JqajaxCoreHelper
       options[:class]   << " #{AJAX_HIDE_LOAD_MESSAGE_SELECTOR}"
     end  
     
+    link_data.merge!(html_defaults_from_options(options))
+    
     return link_data
   end  
   
@@ -51,6 +53,8 @@ module JqajaxCoreHelper
     elsif options[:load_message] == false
       options[:class]   << " #{AJAX_HIDE_LOAD_MESSAGE_SELECTOR}"
     end
+    
+    link_data.merge!(html_defaults_from_options(options))
     
     return link_data
   end
@@ -87,17 +91,16 @@ module JqajaxCoreHelper
   
   private
   
-  def init_link_data(options)
+  def init_link_data(options = {})
     link_data = {:remote => true}
     link_data.merge!(update_div_from_options)
     link_data.merge!(submit_from_options)
     link_data.merge!(callback_from_options)
     link_data.merge!(confirm_message_from_options(options))  
-    link_data.merge!(html_defaults_from_options) 
     return link_data
   end  
   
-  def confirm_message_from_options(options)
+  def confirm_message_from_options(options = {})
     # Confirm-Message setzen: Entweder default, oder eigene Nachricht
     if options[:confirm]
       { JqajaxCore2::Config.html_data[:confirm] => (options[:confirm] == true ? JqajaxCore2::Config.core[:confirm_default] : options[:confirm].to_s )} 
@@ -106,19 +109,19 @@ module JqajaxCoreHelper
     end   
   end
   
-  def callback_from_options(options)
+  def callback_from_options(options = {})
     options[:callback] ? {JqajaxCore2::Config.html_data[:callback] => options[:callback]} : {}
   end
   
-  def submit_from_options(options)    
+  def submit_from_options(options = {})    
     options[:submit] ? {JqajaxCore2::Config.html_data[:submit_data] => options[:submit]} : {}
   end
   
-  def update_div_from_options(options)
+  def update_div_from_options(options = {})
     options[:update]  ?  { JqajaxCore2::Config.core[:update_div] => options[:update]} : {}
   end
   
-  def html_defaults_from_options(options)  
+  def html_defaults_from_options(options = {})  
     l = {} 
     l.merge!(:class => options[:class])
     l.merge!(:id    => options[:id])
