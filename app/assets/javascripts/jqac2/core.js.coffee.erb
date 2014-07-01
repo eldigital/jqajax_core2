@@ -16,7 +16,6 @@ window.JqAjaxCore2.Core =
     unloadedLinks.bind 'ajax:beforeSend', (xhr,settings) ->
       link_options = JqAjaxCore2.Helpers.linkOptionsFromElement(this)
       
-      console.log(link_options)
       
       if link_options['confirm'] == true
         return confirm link_options['confirm_message']
