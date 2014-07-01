@@ -48,9 +48,10 @@ window.JqAjaxCore2.Core =
         JqAjaxCore2.Loading.hideLoading()
         
 		
-    		if link_options['callback'] != ''
-    			eval(link_options['callback'])
-  		
+        if link_options['callback'] != ''
+          eval(link_options['callback'])
+          
+      JqAjaxCore2.Initializer.initJqAc2()    
     
   	# XHR Data Handler - Error
     #
