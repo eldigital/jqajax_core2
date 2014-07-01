@@ -62,66 +62,13 @@ progressAjaxLoadMessage = function(target, message){
 
 
 
-// Element ausblenden - verwendung als Callback nach löschen etc...
-hideItem = function(id){
-	$("#"+id).fadeOut(300);
-}
-
-
-// Element löschen - verwendung als Callback nach löschen etc...
-removeItem = function(id){
-	$("#"+id).remove();
-}
 
 
 
 
 
-// JavaScript Makeover of Rails 2.3 'remote_function' helper
-remote_function = function(path_url, div, load_message, submit, load_text){
-  if(typeof submit != 'undefined' && submit != '') {
-    
-    submit = ("#"+submit).replace("##", "#")
-    request_data = $(submit).serialize();
-    request_type = "post"
-    
-  }else{
-    request_data = 'authenticity_token=' + AUTH_TOKEN
-    request_type = "get"
-  }
-  
-	div = div || '<%= AJAX_OVERLAY_CONTAINER_NAME %>'
-	$.ajax({
-		success:function(request){
-			
-			$('#'+div).html(request);
 
-			hideLoading();
-			initAllAjaxTools();
-      loadAjaxFlashNotice();
-		},
-    
-		beforeSend: function(data){
-			if(load_message != false){
-				if(load_message == true){
-					ajaxLoadMessage(div);
-				}else if(load_message == 'tiny'){
-				  tinyAjaxLoadMessage(div, load_text);
-				}else if(load_message == 'progress'){
-				  progressAjaxLoadMessage(div, load_text);
-				}
-				else{
-					showLoading();
-				}
-			}else{
-			}
-		},
-    
-		url:  path_url,
-		data: request_data,
-		type: request_type 
-	});
-}
+
 
 
 
