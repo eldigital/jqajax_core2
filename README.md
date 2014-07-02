@@ -18,7 +18,7 @@ New Features of this updated versions are:
 
 ## Installation
 
-1. Add this line to your application's Gemfile:
+1) Add this line to your application's Gemfile
 
       gem 'jqajax_core2'
 
@@ -30,19 +30,19 @@ New Features of this updated versions are:
 
       $ gem install jqajax_core2
 
-2. Add javascript to your application.js
+2) Add javascript to your application.js
 
-      \/\/= require jqajax-core2
+      //= require jqajax-core2
 
-3. Add default styles to application.css
+3) Add default styles to application.css
     
       *= require jqajax-core2
 
-4. Add default elements to application.html.erb
+4) Add default elements to application.html.erb, just after the '<body>'
      
       <%= include_jqajax_core %>
 
-5. Add Engine to your Routes
+5) Add Engine to your Routes
     
       mount JqAjaxCore2::Engine => "/"
 
