@@ -21,12 +21,12 @@ window.JqAjaxCore2.Core =
         return confirm link_options['confirm_message']
       
       if link_options['hide_load_message'] != true
-      	if link_options['load_message'] == true && link_options['target_div'] != ""
-      		ajaxLoadMessage(link_options['target_div'], link_options['load_message_text'])	
-      	else if link_options['tiny_loader'] == true && link_options['target_div'] != ""
-      		tinyAjaxLoadMessage(link_options['target_div'])
-      	else
-      		JqAjaxCore2.Loading.showLoading()
+        if link_options['load_message'] == true && link_options['target_div'] != ""
+          ajaxLoadMessage(link_options['target_div'], link_options['load_message_text'])	
+        else if link_options['tiny_loader'] == true && link_options['target_div'] != ""
+          tinyAjaxLoadMessage(link_options['target_div'])
+        else
+          JqAjaxCore2.Loading.showLoading()
        
       # Checking if data should be submitted
       if link_options['submit_data'] != ''
@@ -36,7 +36,6 @@ window.JqAjaxCore2.Core =
 
   	# XHR Data Handler - Success
     # The response should be handled and placed in the content
-  	
     unloadedLinks.bind 'ajax:success', (xhr, data, status) ->
       link_options = JqAjaxCore2.Helpers.linkOptionsFromElement($(this))
       
@@ -45,23 +44,19 @@ window.JqAjaxCore2.Core =
       else 
         $("#"+link_options['target_div']).html(data)
     
-        JqAjaxCore2.Loading.hideLoading()
-        
-		
-    		if link_options['callback'] != ''
-    			eval(link_options['callback'])
-  		
+      JqAjaxCore2.Loading.hideLoading()
+
+      if link_options['callback'] != ''
+        eval(link_options['callback'])
+          
+      JqAjaxCore2.Initializer.initJqAc2()    
     
   	# XHR Data Handler - Error
-    #
     unloadedLinks.bind 'ajax:error', (xhr, status, error) ->
-      
       <% if Rails.env == 'development' %>
-        JqAjaxCore2.Loading.flashNoticeDisplay("Error - see log for Details", 'error')
+        JqAjaxCore2.Loading.flashNoticeDisplay("Error - see log for details", 'error')
       <% end %>	
-      
       JqAjaxCore2.Loading.hideLoading()
-      
       
     
     unloadedLinks.removeClass("<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>");
@@ -77,7 +72,7 @@ window.JqAjaxCore2.Core =
     select_actions = $("select.<%= JqajaxCore2::Config.core[:select_onchange_selector] %>.<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>");
     select_actions.change ->
       #Daten zusammenladen
-      link_options = linkOptionsFromClassName(this);
+      link_options = JqAjaxCore2.Helpers.linkOptionsFromElement($(this))
       
       if link_options['confirm'] == true
         return confirm link_options['confirm_message']
@@ -86,7 +81,45 @@ window.JqAjaxCore2.Core =
       url = $(this).attr('<%= JqajaxCore2::Config.html_data[:target_url] %>').replace('<%= JqajaxCore2::Config.core[:url_placeholder] %>', this.value);
       
       # Feuer frei
-      remote_function(url, link_options['target_div'], link_options['load_message'] == true, link_options['submit_data']);
+      JqAjaxCore2.Core.remoteFunction(url, link_options['target_div'], link_options['load_message'] == true, link_options['submit_data']);
       
     select_actions.removeClass("<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>")
+      
+      
+  
+  
+  # JavaScript Makeover of Rails 2.3 'remote_function' helper
+  remoteFunction: (path_url, div, load_message, submit, load_text) ->
+    if typeof submit != 'undefined' && submit != ''
+      submit = ("#"+submit).replace("##", "#")
+      request_data = $(submit).serialize()
+      request_type = "post"
+    else
+      request_type = "get"
+      request_data = ""
+    
+    div = div || '<%= JqajaxCore2::Config.core[:ajax_content_container_id] %>'
+    $.ajax
+      success: (request) ->
+        $('#'+div).html(request)
+        JqAjaxCore2.Loading.hideLoading()
+        JqAjaxCore2.Initializer.initJqAc2()
+  
+      beforeSend: (data) ->
+        if load_message != false
+          if load_message == true
+            ajaxLoadMessage(div);
+          else if load_message == 'tiny'
+            tinyAjaxLoadMessage(div, load_text)
+          else if load_message == 'progress'
+            progressAjaxLoadMessage(div, load_text)
+          else
+            JqAjaxCore2.Loading.showLoading()
+
+    
+      url:  path_url,
+      data: request_data,
+      type: request_type 
+
+      
   
