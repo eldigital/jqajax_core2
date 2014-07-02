@@ -32,7 +32,7 @@ New Features of this updated versions are:
 
 2. Add javascript to your application.js
 
-      //= require jqajax-core2
+      \/\/= require jqajax-core2
 
 3. Add default styles to application.css
     
