@@ -22,11 +22,11 @@ New Features of this updated versions are:
 
     gem 'jqajax_core2'
 
-And then execute:
+  And then execute:
 
     $ bundle
 
-Or install it yourself as:
+  Or install it yourself as:
 
     $ gem install jqajax_core2
 
