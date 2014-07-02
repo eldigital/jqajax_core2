@@ -1,4 +1,4 @@
-Copyright (c) 2014 Florian Eck
+Copyright (c) 2014 Florian Eck | FRIENDS Financial Systems GmbH
 
 MIT License
 

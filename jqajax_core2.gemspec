@@ -1,9 +1,9 @@
 Gem::Specification.new do |spec|
   spec.name          = "jqajax_core2"
-  spec.version       = "0.0.1"
+  spec.version       = "0.0.8"
   spec.authors       = ["Florian Eck"]
   spec.email         = ["it-support@friends-systems.de"]
-  spec.description   = "This is the new version of friends_ajax_core, optimizied and added flexibility"
+  spec.description   = "This is the new version of friends_ajax_core, optimizied and added flexibility."
   spec.summary       = "Makes Rails Ajax easy"
   spec.homepage      = ""
   spec.license       = "MIT"
