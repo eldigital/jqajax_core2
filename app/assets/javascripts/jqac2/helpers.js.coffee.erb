@@ -44,3 +44,12 @@ hideItem: (id) ->
 # Element löschen - verwendung als Callback nach löschen etc...
 removeItem: (id) ->
   $("#"+id).remove();
+
+getJsonData: (url, type) ->
+  type = 'get' if type == undefined
+  result = []
+  $.ajax({ url: url,async: false, type: type }).done (response) ->
+    result = response
+
+  return result
+
