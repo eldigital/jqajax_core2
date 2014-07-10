@@ -92,7 +92,8 @@ module JqajaxCoreHelper
   private
   
   def init_link_data(options = {})
-    link_data = {:remote => true}
+    link_data = {:remote => true }
+    link_data.merge!(:method => options[:method]) if options[:method]
     link_data.merge!(update_div_from_options(options))
     link_data.merge!(submit_from_options(options))
     link_data.merge!(callback_from_options(options))

@@ -9,14 +9,20 @@ window.JqAjaxCore2.Core =
   	# add 'update-div-...' to set custom div to render data in!
     
     unloadedLinks = $("a.<%= JqajaxCore2::Config.core[:ajax_link_class] %>.<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>, form.<%= JqajaxCore2::Config.core[:ajax_link_class] %>.<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>")
-    
+
     # XHR Data Handler - beforeSend
     # Loading information should be displayed
-    
     unloadedLinks.bind 'ajax:beforeSend', (xhr,settings) ->
       link_options = JqAjaxCore2.Helpers.linkOptionsFromElement(this)
       
-      
+      # Checking if data should be submitted
+      # TODO: Does not work because of rails jquery_ujs shizznit...
+      # settings.data is not passed back to ajax handler
+      if link_options['submit_data'] != ''
+        form_data = jQuery("#" + link_options['submit_data'] + " :input").serialize()
+        settings.data = form_data
+        settings.type = "POST"
+        
       if link_options['confirm'] == true
         return confirm link_options['confirm_message']
       
@@ -27,11 +33,8 @@ window.JqAjaxCore2.Core =
           tinyAjaxLoadMessage(link_options['target_div'])
         else
           JqAjaxCore2.Loading.showLoading()
-       
-      # Checking if data should be submitted
-      if link_options['submit_data'] != ''
-        form_data = jQuery("#" + link_options['submit_data'] + " :input").serialize()
-        settings.data = form_data
+      
+      
 
 
   	# XHR Data Handler - Success
