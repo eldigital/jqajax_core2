@@ -21,7 +21,7 @@ window.JqAjaxCore2.Core =
       if link_options['submit_data'] != ''
         form_data = jQuery("#" + link_options['submit_data'] + " :input").serialize()
         settings.data = form_data
-        settings.type = "POST"
+        settings.type = "post"
         
       if link_options['confirm'] == true
         return confirm link_options['confirm_message']
@@ -34,8 +34,6 @@ window.JqAjaxCore2.Core =
         else
           JqAjaxCore2.Loading.showLoading()
       
-      
-
 
   	# XHR Data Handler - Success
     # The response should be handled and placed in the content
@@ -60,13 +58,9 @@ window.JqAjaxCore2.Core =
         JqAjaxCore2.Loading.flashNoticeDisplay("Error - see log for details", 'error')
       <% end %>	
       JqAjaxCore2.Loading.hideLoading()
-      
     
     unloadedLinks.removeClass("<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>");
-    
-
-  
- 
+   
   initSelectOnchange: ->
   	# Default Ajax Link, formerly known as 'ajax_default_link'-Helper
   	# Data will be automatically rendered into ajax overlay container, after showing loading message
@@ -88,9 +82,6 @@ window.JqAjaxCore2.Core =
       
     select_actions.removeClass("<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>")
       
-      
-  
-  
   # JavaScript Makeover of Rails 2.3 'remote_function' helper
   remoteFunction: (path_url, div, load_message, submit, load_text) ->
     if typeof submit != 'undefined' && submit != ''
