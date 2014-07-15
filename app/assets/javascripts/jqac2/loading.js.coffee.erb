@@ -1,5 +1,7 @@
 window.JqAjaxCore2.Loading =
-  
+  <% actionview = ActionView::Base.new %>
+  <% actionview.view_paths += [File.expand_path("../../../../views", __FILE__)] %>
+
   showLoading: ->
     <% if JqajaxCore2::Config.overlay[:enable] == true %>
       @overlay().height($("body").height());
@@ -54,7 +56,10 @@ window.JqAjaxCore2.Loading =
   	$.getJSON '/jqca2/jqac2_flash', (data) ->
       $(data).each ->
   			@flashNoticeDisplay(this[1], this[0])
-  		
   
+  addLoader: (div, text) ->
+    $('#'+div).html(JqAjaxCore2.Loading.loaderHtml.replace('{TXT}', text))
+  
+  loaderHtml: '<%= actionview.render "/jqajax/loader" %>'
 
 
