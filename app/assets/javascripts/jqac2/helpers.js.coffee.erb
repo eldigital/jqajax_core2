@@ -53,3 +53,13 @@ getJsonData: (url, type) ->
 
   return result
 
+
+randomString: ->
+  chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz"
+  string_length = 8
+  randomstring = ''
+  rnum = 0
+  for i in [0..string_length]
+    rnum = Math.floor(Math.random() * chars.length)
+    randomstring += chars.substring(rnum,rnum+1)
+  return randomstring
