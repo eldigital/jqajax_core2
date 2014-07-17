@@ -2,7 +2,8 @@
 require "jqajax_core2/config"
 
 # Prefix
-p = 'jqac2'
+JqajaxCore2::Config.prefix = 'jqac2'
+p = JqajaxCore2::Config.prefix
 #== Core Settings
 # Default ajax link class names
 JqajaxCore2::Config.core[:ajax_link_class]    ||= "#{p}-default-link"
@@ -92,6 +93,7 @@ JqajaxCore2::Config.html_data[:target_url] ||= "data-#{p}-target-url"
 
 
 require "jqajax_core2/engine"
+require "jqajax_core2/validations"
 require "jqajax_core2/application_controller_ext"
 
 ActionController::Base.send(:include, JqajaxCore2::ApplicationControllerExt)

@@ -1,0 +1,60 @@
+window.JqAjaxCore2.Validation =
+  
+  <% JqajaxCore2::Validations.settings.each do |name, settings|  %>
+  validate<%= name.to_s.humanize %>Format: (attr) ->
+    return JqAjaxCore2.Validation.validateFormat(attr, <%= settings[:regexp] %>, <%= settings[:empty] == false ? 'false' : 'true' %>)
+  <% end %>
+  
+  validateFormat: (string, regexp, empty) ->
+    if (!string || 0 == string.length) && empty == true
+      return true
+    else if string.match(regexp) == null
+      return false
+    else
+      return true
+
+  validateForm: (form) ->
+    form = $(form)
+    formStatus = true
+    submitButton = $(form.find("input[type=submit]")) 
+      
+    $(".error-description").remove()
+  
+    $(form.find("input")).bind 'change keydown click', ->
+      submitButton.removeAttr("disabled")
+      submitButton.removeClass("disabled")
+  
+    <% JqajaxCore2::Validations.settings.keys.each do |mode| %>
+    form.find("div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > input.<%= JqajaxCore2::Validations.settings[mode][:class] %>, div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > textarea.<%= JqajaxCore2::Validations.settings[mode][:class] %>").each ->
+      if JqAjaxCore2.Validation.validate<%= mode.to_s.humanize %>Format($(this).val()) == false
+        formStatus = false;
+        $(this).addClass("error");
+        $(this).before("<div class='error-description'><%= JqajaxCore2::Validations.settings[mode][:message] %></div>");
+      else
+        $(this).removeClass("error");
+    <% end %>
+    
+    form.find("div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > input.<%= JqajaxCore2::Validations.checkbox_validation_class %>").each ->
+    # Find the label for the checkbox
+      checkbox_id = $(this).attr("id")      
+      label = $("label[for="+checkbox_id+"]")  
+     
+      if !$(this).is(":checked")
+        formStatus = false
+        label.addClass("error")
+      else
+        label.removeClass("error")
+  
+    if formStatus == false
+      submitButton.attr("disabled", true)
+      submitButton.addClass("disabled")
+      alert("Bei der Eingabe sind Fehler aufgetreten. Bitte prüfen Sie die markierten Felder.")
+      
+    return formStatus
+    
+  
+  initForms: ->
+    $("form.<%= JqajaxCore2::Validations.form_validation_class %>").submit ->
+      return JqAjaxCore2.Validation.validateForm(this)   
+
+  

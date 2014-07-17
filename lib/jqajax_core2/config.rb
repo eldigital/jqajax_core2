@@ -2,7 +2,7 @@ module JqajaxCore2
 class Config
   
   #= Core Setting
-  cattr_accessor :core
+  cattr_accessor :core, :prefix
   self.core = {}
   
   #= HTML Data-Attributes
