@@ -3,7 +3,7 @@ module JqajaxCore2
     
     cattr_accessor :settings, :checkbox_validation_class, :skip_validation_class, :form_validation_class, :prefix
     
-    self.prefix = JqajaxCore2::Config.prefix
+    self.prefix = "#{JqajaxCore2::Config.prefix}-vld"
     
     self.settings = {
     

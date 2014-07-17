@@ -54,6 +54,9 @@ window.JqAjaxCore2.Validation =
     
   
   initForms: ->
+    $("input[class*=<%= JqajaxCore2::Validations.prefix %>]:first-child, input[class^=<%= JqajaxCore2::Validations.prefix %>]:first-child").each ->
+      $(this).closest("form").addClass("<%= JqajaxCore2::Validations.form_validation_class %>")
+    
     $("form.<%= JqajaxCore2::Validations.form_validation_class %>").submit ->
       return JqAjaxCore2.Validation.validateForm(this)   
 
