@@ -26,7 +26,7 @@ window.JqAjaxCore2.Validation =
   
     <% JqajaxCore2::Validations.settings.keys.each do |mode| %>
     form.find("div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > input.<%= JqajaxCore2::Validations.settings[mode][:class] %>, div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > textarea.<%= JqajaxCore2::Validations.settings[mode][:class] %>").each ->
-      if JqAjaxCore2.Validation.validate<%= mode.to_s.humanize %>Format($(this).val()) == false
+      if JqAjaxCore2.Validation.validate<%= mode.to_s.humanize %>Format($(this).val()) == false && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>")
         formStatus = false;
         $(this).addClass("error");
         $(this).before("<div class='error-description'><%= JqajaxCore2::Validations.settings[mode][:message] %></div>");
@@ -54,10 +54,10 @@ window.JqAjaxCore2.Validation =
     
   
   initForms: ->
-    $("input[class*=<%= JqajaxCore2::Validations.prefix %>]:first-child, input[class^=<%= JqajaxCore2::Validations.prefix %>]:first-child").each ->
+    $("input[class*=<%= JqajaxCore2::Validations.prefix %>]:first, input[class^=<%= JqajaxCore2::Validations.prefix %>]:first").each ->
       $(this).closest("form").addClass("<%= JqajaxCore2::Validations.form_validation_class %>")
     
     $("form.<%= JqajaxCore2::Validations.form_validation_class %>").submit ->
-      return JqAjaxCore2.Validation.validateForm(this)   
+      return JqAjaxCore2.Validation.validateForm(this)
 
   
