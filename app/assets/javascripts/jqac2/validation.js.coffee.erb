@@ -1,10 +1,49 @@
 window.JqAjaxCore2.Validation =
+
+<% JqajaxCore2::Validations.settings.each do |name, settings|  %>
+<% if settings[:regexp] %>
+  validate<%= name.to_s.camelize %>: (el) ->
+    attr = $(el).val()
+    result = {}
+    result.status = JqAjaxCore2.Validation.validateFormat(attr, <%= settings[:regexp] %>, <%= settings[:empty] == false ? 'false' : 'true' %>)
+    result.message = JqAjaxCore2.ValidationErrorMessages.<%= name.to_s.camelize %>
+    return result
+  <% end %>  
+  # Provide getter for data attributes defined in th 
+  <% if settings[:data] %>
+  get<%= name.to_s.camelize %>Data: (el) ->
+    data = {}
+    <% settings[:data].each do |m, d| %>
+    data.<%= m.to_s.camelize %> = $(el).attr("<%= "data-#{JqajaxCore2::Validations.data_prefix}-#{m.to_s.dasherize}" %>") || "<%= d %>"
+    <% end %>
+    return data
+  <% end %>    
+<% end %>
   
-  <% JqajaxCore2::Validations.settings.each do |name, settings|  %>
-  validate<%= name.to_s.humanize %>Format: (attr) ->
-    return JqAjaxCore2.Validation.validateFormat(attr, <%= settings[:regexp] %>, <%= settings[:empty] == false ? 'false' : 'true' %>)
-  <% end %>
   
+  # Define Custom methods for complex validation
+  validatePasswordSimple: (el) ->
+    value = $(el).val()
+    
+    settings = JqAjaxCore2.Validation.getPasswordSimpleData(el)
+    result = {}
+    result.status  = false
+    result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.PasswordSimple, settings)
+    console.log result.message
+    if JqAjaxCore2.Validation.validateRequired(el) && value.length >= parseInt(settings.Length)
+      result.status = true
+      result.status = false if value.match(/[A-Z]/) == null
+      result.status = false if value.match(/[a-z]/) == null
+      result.status = false if value.match(/[0-9]/) == null
+    return result  
+    
+  renderErrorMessage: (text, vars) ->
+    t = text
+    for attr, value of vars
+      t = t.replace('['+attr+']', value)
+    return t   
+  
+  # Helper method for string validation with given regular expression
   validateFormat: (string, regexp, empty) ->
     if (!string || 0 == string.length) && empty == true
       return true
@@ -12,7 +51,8 @@ window.JqAjaxCore2.Validation =
       return false
     else
       return true
-
+  
+  # run the complete validation for the given form
   validateForm: (form) ->
     form = $(form)
     formStatus = true
@@ -26,10 +66,11 @@ window.JqAjaxCore2.Validation =
   
     <% JqajaxCore2::Validations.settings.keys.each do |mode| %>
     form.find("div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > input.<%= JqajaxCore2::Validations.settings[mode][:class] %>, div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > textarea.<%= JqajaxCore2::Validations.settings[mode][:class] %>").each ->
-      if JqAjaxCore2.Validation.validate<%= mode.to_s.humanize %>Format($(this).val()) == false && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>")
+      validationResult = JqAjaxCore2.Validation.validate<%= mode.to_s.camelize %>($(this))
+      if validationResult.status == false && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>") && $(this).parents(".<%= JqajaxCore2::Validations.skip_validation_class %>").length == 0
         formStatus = false;
         $(this).addClass("error");
-        $(this).before("<div class='error-description'><%= JqajaxCore2::Validations.settings[mode][:message] %></div>");
+        $(this).before("<div class='error-description'>"+ validationResult.message + "</div>");
       else
         $(this).removeClass("error");
     <% end %>
@@ -53,6 +94,7 @@ window.JqAjaxCore2.Validation =
     return formStatus
     
   
+  # Bind validation to all forms that can be found
   initForms: ->
     $("input[class*=<%= JqajaxCore2::Validations.prefix %>]:first, input[class^=<%= JqajaxCore2::Validations.prefix %>]:first").each ->
       $(this).closest("form").addClass("<%= JqajaxCore2::Validations.form_validation_class %>")
@@ -60,4 +102,7 @@ window.JqAjaxCore2.Validation =
     $("form.<%= JqajaxCore2::Validations.form_validation_class %>").submit ->
       return JqAjaxCore2.Validation.validateForm(this)
 
-  
+JqAjaxCore2.ValidationErrorMessages = 
+  <% JqajaxCore2::Validations.settings.each do |name, settings|  %>
+    <%= name.to_s.camelize %>: '<%= settings[:message] %>'
+  <% end %>  

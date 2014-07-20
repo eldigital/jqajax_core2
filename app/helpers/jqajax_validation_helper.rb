@@ -8,10 +8,17 @@ module JqajaxValidationHelper
       options = {}
     end    
     
+    # validierungsoptionen
+    if options[:validator_options]
+      options[:validator_options].each do |opt, val|
+        options.merge!(jqac2_data_attribute_for(opt) => val)
+      end  
+    end  
     
     vtypes.each do |vtype|
       if JqajaxCore2::Validations.settings[vtype.to_sym]
         options.merge!(:class => [options[:class], JqajaxCore2::Validations.settings[vtype.to_sym][:class]].compact.join(" "))
+        
       else
         raise ArgumentError, "Validation of type #{vtype} is not known"
       end    
@@ -22,6 +29,10 @@ module JqajaxValidationHelper
   
   def jqac2_validate_form
     JqajaxCore2::Validations.form_validation_class
+  end  
+  
+  def jqac2_data_attribute_for(m="bla")
+    "data-#{JqajaxCore2::Validations.data_prefix}-#{m.to_s.dasherize}"
   end    
   
 end  
