@@ -30,12 +30,28 @@ module JqajaxCore2
         :regexp => '/[0-9]{4,5}/',
         :message => "Ungültige PLZ",
       },
-    
+      
+      #== Validations for dates etc...
       :date => {
         :class => "#{self.prefix}-date-validation",
-        :regexp => "/^([1-9]|0[1-9]|[12][0-9]|3[01])[-\.]([1-9]|0[1-9]|1[012])[-\.]\d{4}$/",
+        # TODO: Regexp does not catch fake dates like 99.99.9999
+        :regexp => "/([0-9]{2}\.[0-9]{2}\.[0-9]{4})|([0-9]{4}-[0-9]{2}-[0-9]{2})/",
         :message => "Ungültiges Datum",
       },
+      
+      #:date_in_future => {
+      #  :class => "#{self.prefix}-date-in-future-validation",
+      #  :message => "Datum darf nicht in der Vergangenheit liegen",
+      #}
+      #
+      #:date_min_age => {
+      #  :class => "#{self.prefix}-date-min-ag-validation",
+      #  :data => {:min_age => 18}
+      #  :message => "Ungültiges Geburtsdatum",
+      #}
+      
+      
+      #== Validations for Passwords, Confirmation etc...
       
       :password_simple => {
         :class => "#{self.prefix}-simple-pass-validation",
@@ -48,7 +64,7 @@ module JqajaxCore2
       :confirmation => {
         :class => "#{self.prefix}-confirmation",
         :data => {:confirm_field => "", :confirm_name => ""},
-        :message => "Bestätigung stimmt nicht überein"
+        :message => "Bestätigung von [ConfirmName] stimmt nicht überein"
       },
     
       :required => {

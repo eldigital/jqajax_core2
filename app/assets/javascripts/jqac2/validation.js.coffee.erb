@@ -4,6 +4,7 @@ window.JqAjaxCore2.Validation =
 <% if settings[:regexp] %>
   validate<%= name.to_s.camelize %>: (el) ->
     attr = $(el).val()
+    console.log(attr)
     result = {}
     result.status = JqAjaxCore2.Validation.validateFormat(attr, <%= settings[:regexp] %>, <%= settings[:empty] == false ? 'false' : 'true' %>)
     result.message = JqAjaxCore2.ValidationErrorMessages.<%= name.to_s.camelize %>
@@ -29,13 +30,27 @@ window.JqAjaxCore2.Validation =
     result = {}
     result.status  = false
     result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.PasswordSimple, settings)
-    console.log result.message
+    
     if JqAjaxCore2.Validation.validateRequired(el) && value.length >= parseInt(settings.Length)
       result.status = true
       result.status = false if value.match(/[A-Z]/) == null
       result.status = false if value.match(/[a-z]/) == null
       result.status = false if value.match(/[0-9]/) == null
-    return result  
+    return result
+  
+  validateConfirmation: (el) ->
+    value = $(el).val()
+    
+    settings = JqAjaxCore2.Validation.getConfirmationData(el)
+    result = {}
+    result.status  = false
+    result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.Confirmation, settings)
+    
+    ref_value = $("#"+settings.ConfirmField).val()
+    
+    if JqAjaxCore2.Validation.validateRequired(el) && value == ref_value 
+      result.status = true
+    return result    
     
   renderErrorMessage: (text, vars) ->
     t = text
