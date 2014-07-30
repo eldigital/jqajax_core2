@@ -39,6 +39,7 @@ JqajaxCore2::Config.overlay[:enable_on_page_unload] ||= true
 JqajaxCore2::Config.loading[:flash_area_div]        ||= "#{p}-flash-area"
 JqajaxCore2::Config.loading[:loader_img]            ||= "ajax-loader.gif"
 JqajaxCore2::Config.loading[:flash_area_position]   ||= :bottom_right
+JqajaxCore2::Config.loading[:load_message]          ||= "data-jqac2-loading"
 
 #== Modal Settings
 JqajaxCore2::Config.modal[:max_width_factor]  ||= 0.9
@@ -83,7 +84,7 @@ JqajaxCore2::Config.html_data[:target_url] ||= "data-#{p}-target-url"
 
 
 # Nachricht für loadMessage
-::HTML_DATA_LOADING             = "data-jqac2-loading"
+
 ::HTML_LOAD_DEFAULT             = "Daten werden geladen"
 ::HTML_TINY_LOAD_DEFAULT        = "wird geladen"
 

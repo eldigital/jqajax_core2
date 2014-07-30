@@ -5,32 +5,15 @@ linkOptionsFromElement: (item) =>
   item = $(item)
   link_options = {};
   
-  link_options['target_div']        =   item.attr('<%= JqajaxCore2::Config.core[:update_div] %>')  || '<%= JqajaxCore2::Config.core[:ajax_content_container_id] %>'
-  link_options['load_message']      =   false
-  link_options['hide_load_message'] =   false
-  link_options['tiny_loader']       =   false
-  link_options['submit_data']       =   item.attr('<%= JqajaxCore2::Config.html_data[:submit_data] %>')  || ''
-  link_options['callback']          =   item.attr('<%= JqajaxCore2::Config.html_data[:callback] %>')     || ''
+  link_options['target_div']        =   item.attr('<%= JqajaxCore2::Config.core[:update_div] %>')       || '<%= JqajaxCore2::Config.core[:ajax_content_container_id] %>'
+  link_options['load_message']      =   item.attr('<%= JqajaxCore2::Config.loading[:load_message] %>')  || ''
+  link_options['submit_data']       =   item.attr('<%= JqajaxCore2::Config.html_data[:submit_data] %>') || ''
+  link_options['callback']          =   item.attr('<%= JqajaxCore2::Config.html_data[:callback] %>')    || ''
   link_options['append']            =   item.attr('<%= JqajaxCore2::Config.html_data[:append] %>') ? true : false
   
   # Checking for confirmation 
   link_options['confirm_message']   =   (item.attr('<%= JqajaxCore2::Config.html_data[:confirm] %>')  || '')
   link_options['confirm']           =   link_options['confirm_message'] != ''
-  
-  css_attributes = $(item.attr('class').split(" "))
-  
-  css_attributes.each (i) =>
-    if css_attributes[i].match("<%= AJAX_HIDE_LOAD_MESSAGE_SELECTOR %>")
-      link_options['hide_load_message'] =  true
-    else if css_attributes[i].match("<%= AJAX_LOAD_MESSAGE_TRIGGER %>") 
-      link_options['load_message']  =  true
-    else if css_attributes[i].match("<%= AJAX_TINY_LOAD_TRIGGER %>") 
-      link_options['tiny_loader']   =  true
-      link_options['load_message']  =  false
-     
-  if link_options['load_message'] == true
-    link_options['load_message_text'] =  $(item).attr('<%= HTML_DATA_LOADING %>')  
-  
   
   return link_options
   

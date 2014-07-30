@@ -26,13 +26,10 @@ window.JqAjaxCore2.Core =
       if link_options['confirm'] == true
         return confirm link_options['confirm_message']
       
-      if link_options['hide_load_message'] != true
-        if link_options['load_message'] == true && link_options['target_div'] != ""
-          ajaxLoadMessage(link_options['target_div'], link_options['load_message_text'])	
-        else if link_options['tiny_loader'] == true && link_options['target_div'] != ""
-          tinyAjaxLoadMessage(link_options['target_div'])
-        else
-          JqAjaxCore2.Loading.showLoading()
+      if link_options['load_message'] != ''
+        JqAjaxCore2.Loading.addLoader(link_options['target_div'], link_options['load_message'])
+      else
+        JqAjaxCore2.Loading.showLoading()
       
 
   	# XHR Data Handler - Success
@@ -76,9 +73,9 @@ window.JqAjaxCore2.Core =
       
       # Url erstellen
       url = $(this).attr('<%= JqajaxCore2::Config.html_data[:target_url] %>').replace('<%= JqajaxCore2::Config.core[:url_placeholder] %>', this.value);
-      
+
       # Feuer frei
-      JqAjaxCore2.Core.remoteFunction(url, link_options['target_div'], link_options['load_message'] == true, link_options['submit_data']);
+      JqAjaxCore2.Core.remoteFunction(url, link_options['target_div'], link_options['load_message'], link_options['submit_data']);
       
     select_actions.removeClass("<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>")
       
@@ -100,15 +97,10 @@ window.JqAjaxCore2.Core =
         JqAjaxCore2.Initializer.initJqAc2()
   
       beforeSend: (data) ->
-        if load_message != false
-          if load_message == true
-            ajaxLoadMessage(div);
-          else if load_message == 'tiny'
-            tinyAjaxLoadMessage(div, load_text)
-          else if load_message == 'progress'
-            progressAjaxLoadMessage(div, load_text)
-          else
-            JqAjaxCore2.Loading.showLoading()
+        if load_message != ''
+          JqAjaxCore2.Loading.addLoader(div, load_message)
+        else
+          JqAjaxCore2.Loading.showLoading()
 
     
       url:  path_url,

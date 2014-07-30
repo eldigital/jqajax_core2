@@ -20,7 +20,7 @@ module JqajaxCoreHelper
     if options[:load_message] && (options[:load_message] != false && !options[:load_message].blank?)
       options[:class] << " #{AJAX_LOAD_MESSAGE_TRIGGER}"
       if options[:load_message].is_a?(String)
-        link_data.merge!(HTML_DATA_LOADING.to_s => options[:load_message])
+        link_data.merge!(JqajaxCore2::Config.loading[:load_message].to_s => options[:load_message])
       end    
     elsif options[:load_message] == false
       options[:class]   << " #{AJAX_HIDE_LOAD_MESSAGE_SELECTOR}"
@@ -48,7 +48,7 @@ module JqajaxCoreHelper
     if options[:load_message] && (options[:load_message] != false && !options[:load_message].blank?)
       options[:class] << " #{AJAX_LOAD_MESSAGE_TRIGGER}"
       if options[:load_message].is_a?(String)
-        link_data.merge!(HTML_DATA_LOADING.to_s => options[:load_message])
+        link_data.merge!(JqajaxCore2::Config.loading[:load_message].to_s => options[:load_message])
       end    
     elsif options[:load_message] == false
       options[:class]   << " #{AJAX_HIDE_LOAD_MESSAGE_SELECTOR}"
