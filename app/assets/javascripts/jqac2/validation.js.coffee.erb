@@ -70,6 +70,7 @@ window.JqAjaxCore2.Validation =
   # run the complete validation for the given form
   validateForm: (form) ->
     form = $(form)
+    console.log(form)
     formStatus = true
     submitButton = $(form.find("input[type=submit]")) 
       
@@ -80,7 +81,8 @@ window.JqAjaxCore2.Validation =
       submitButton.removeClass("disabled")
   
     <% JqajaxCore2::Validations.settings.keys.each do |mode| %>
-    form.find("div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > input.<%= JqajaxCore2::Validations.settings[mode][:class] %>, div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > textarea.<%= JqajaxCore2::Validations.settings[mode][:class] %>").each ->
+    inputsForValidation = form.find(":input.<%= JqajaxCore2::Validations.settings[mode][:class] %>")
+    inputsForValidation.each ->
       validationResult = JqAjaxCore2.Validation.validate<%= mode.to_s.camelize %>($(this))
       if validationResult.status == false && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>") && $(this).parents(".<%= JqajaxCore2::Validations.skip_validation_class %>").length == 0
         formStatus = false;
@@ -111,10 +113,11 @@ window.JqAjaxCore2.Validation =
   
   # Bind validation to all forms that can be found
   initForms: ->
-    $("input[class*=<%= JqajaxCore2::Validations.prefix %>]:first, input[class^=<%= JqajaxCore2::Validations.prefix %>]:first").each ->
+    $("input[class*=<%= JqajaxCore2::Validations.prefix %>]:first, :input[class^=<%= JqajaxCore2::Validations.prefix %>]:first").each ->
       $(this).closest("form").addClass("<%= JqajaxCore2::Validations.form_validation_class %>")
     
     $("form.<%= JqajaxCore2::Validations.form_validation_class %>").submit ->
+    
       return JqAjaxCore2.Validation.validateForm(this)
 
 JqAjaxCore2.ValidationErrorMessages = 

@@ -35,4 +35,8 @@ module JqajaxValidationHelper
     "data-#{JqajaxCore2::Validations.data_prefix}-#{m.to_s.dasherize}"
   end    
   
+  def init_jqac2_validator 
+    javascript_tag("JqAjaxCore2.Validation.initForms()")
+  end  
+  
 end  
