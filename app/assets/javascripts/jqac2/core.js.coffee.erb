@@ -14,7 +14,6 @@ window.JqAjaxCore2.Core =
     # Loading information should be displayed
     unloadedLinks.bind 'ajax:beforeSend', (xhr,settings) ->
       link_options = JqAjaxCore2.Helpers.linkOptionsFromElement(this)
-      
       # Checking if data should be submitted
       # TODO: Does not work because of rails jquery_ujs shizznit...
       # settings.data is not passed back to ajax handler
@@ -36,11 +35,11 @@ window.JqAjaxCore2.Core =
     # The response should be handled and placed in the content
     unloadedLinks.bind 'ajax:success', (xhr, data, status) ->
       link_options = JqAjaxCore2.Helpers.linkOptionsFromElement($(this))
-      
+      target = $("#"+link_options['target_div']) 
       if link_options['append'] == true
-        $("#"+link_options['target_div']).append(data)
+        target.append(data)
       else 
-        $("#"+link_options['target_div']).html(data)
+        target.html(data)
     
       JqAjaxCore2.Loading.hideLoading()
 
