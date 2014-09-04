@@ -19,7 +19,9 @@ module JqajaxValidationHelper
       if JqajaxCore2::Validations.settings[vtype.to_sym]
         options.merge!(:class => [options[:class], JqajaxCore2::Validations.settings[vtype.to_sym][:class]].compact.join(" "))
         
-      else
+      elsif vtype.nil?
+        options
+      else  
         raise ArgumentError, "Validation of type #{vtype} is not known"
       end    
     end  

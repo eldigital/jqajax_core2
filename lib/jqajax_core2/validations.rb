@@ -31,6 +31,12 @@ module JqajaxCore2
         :message => "Ungültige PLZ",
       },
       
+      :number => {
+        :class => "#{self.prefix}-nr-validation",
+        :regexp => '/[0-9]{1,}/',
+        :message => "Ungültige Zahl",
+      },
+      
       #== Validations for dates etc...
       :date => {
         :class => "#{self.prefix}-date-validation",
