@@ -13,6 +13,7 @@ module JqajaxValidationHelper
       options[:validator_options].each do |opt, val|
         options.merge!(jqac2_data_attribute_for(opt) => val)
       end  
+      options.delete(:validator_options)
     end  
     
     vtypes.each do |vtype|

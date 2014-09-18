@@ -50,7 +50,34 @@ window.JqAjaxCore2.Validation =
     
     if JqAjaxCore2.Validation.validateRequired(el) && value == ref_value 
       result.status = true
-    return result    
+    return result
+  
+  validateExact: (el) ->
+    value = $(el).val()
+    
+    settings = JqAjaxCore2.Validation.getExactData(el)
+    result = {}
+    result.status  = false
+    result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.Exact, settings)
+    
+    if value == settings.Value
+      result.status = true
+      
+    return result 
+  
+  validateLength: (el) ->
+    value = $(el).val()
+
+    settings = JqAjaxCore2.Validation.getLengthData(el)
+    result = {}
+    result.status  = false
+    
+    result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.Length, settings)
+
+    if value.length == parseInt(JqAjaxCore2.Validation.getLengthData(el).Length)
+      result.status = true
+      
+    return result       
     
   renderErrorMessage: (text, vars) ->
     t = text

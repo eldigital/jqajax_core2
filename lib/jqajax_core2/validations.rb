@@ -33,7 +33,7 @@ module JqajaxCore2
       
       :number => {
         :class => "#{self.prefix}-nr-validation",
-        :regexp => '/[0-9]{1,}/',
+        :regexp => '/[0-9\ ]{1,}/',
         :message => "Ungültige Zahl",
       },
       
@@ -71,6 +71,18 @@ module JqajaxCore2
         :class => "#{self.prefix}-confirmation",
         :data => {:confirm_field => "", :confirm_name => ""},
         :message => "Bestätigung von [ConfirmName] stimmt nicht überein"
+      },
+      
+      :exact => {
+        :class => "#{self.prefix}-exact-validation",
+        :data => {:value => ""},
+        :message => "Eingabe ungültig"
+      },
+      
+      :length => {
+        :class => "#{self.prefix}-length-validation",
+        :data => {:length => 0},
+        :message => "[Length] Zeichen"
       },
     
       :required => {
