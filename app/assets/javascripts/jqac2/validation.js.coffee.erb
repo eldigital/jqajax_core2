@@ -119,12 +119,13 @@ window.JqAjaxCore2.Validation =
         $(this).removeClass("error");
     <% end %>
     
-    form.find("div:not(.<%= JqajaxCore2::Validations.skip_validation_class %>) > input.<%= JqajaxCore2::Validations.checkbox_validation_class %>").each ->
+    checkboxesForValidation = form.find("input.<%= JqajaxCore2::Validations.checkbox_validation_class %>")
+    checkboxesForValidation.each ->
     # Find the label for the checkbox
       checkbox_id = $(this).attr("id")      
       label = $("label[for="+checkbox_id+"]")  
      
-      if !$(this).is(":checked")
+      if !$(this).is(":checked") && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>") && $(this).parents(".<%= JqajaxCore2::Validations.skip_validation_class %>").length == 0
         formStatus = false
         label.addClass("error")
       else
