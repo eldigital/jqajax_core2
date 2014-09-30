@@ -82,7 +82,7 @@ window.JqAjaxCore2.Core =
   remoteFunction: (path_url, div, load_message, submit, load_text) ->
     if typeof submit != 'undefined' && submit != ''
       submit = ("#"+submit).replace("##", "#")
-      request_data = $(submit).serialize()
+      request_data = $(submit + " :input").serialize()
       request_type = "post"
     else
       request_type = "get"
@@ -101,7 +101,6 @@ window.JqAjaxCore2.Core =
         else
           JqAjaxCore2.Loading.showLoading()
 
-    
       url:  path_url,
       data: request_data,
       type: request_type 
