@@ -79,7 +79,7 @@ window.JqAjaxCore2.Core =
     select_actions.removeClass("<%= JqajaxCore2::Config.core[:no_ajax_link_class] %>")
       
   # JavaScript Makeover of Rails 2.3 'remote_function' helper
-  remoteFunction: (path_url, div, load_message, submit, load_text) ->
+  remoteFunction: (path_url, div, load_message, submit) ->
     if typeof submit != 'undefined' && submit != ''
       submit = ("#"+submit).replace("##", "#")
       request_data = $(submit + " :input").serialize()
