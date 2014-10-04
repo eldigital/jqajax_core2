@@ -62,8 +62,8 @@ module JqajaxCore2
       :password_simple => {
         :class => "#{self.prefix}-simple-pass-validation",
         # Data-Attributes used by the method, and their default values
-        :data => {:length => 8},
-        :message => "Min. [Length] Zeichen, min. Groß-/Kleinbuchstaben und Zahlen"
+        :data => {:length => 6},
+        :message => "Min. [Length] Zeichen, min. Buchstaben und Zahlen"
         
       },
       
