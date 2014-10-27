@@ -75,7 +75,21 @@ window.JqAjaxCore2.Validation =
     if value.length == parseInt(JqAjaxCore2.Validation.getLengthData(el).Length)
       result.status = true
       
-    return result       
+    return result
+  
+  validateFromService: (el) ->         
+    value = $(el).val()
+    json_url  = JqAjaxCore2.Validation.getFromServiceData(el).Url
+    result = {}
+    $.ajax
+      dataType: "json",
+      url: json_url,
+      data: {value: value},
+      async: false
+      success: (data) ->
+        result = data
+    
+    return result
     
   renderErrorMessage: (text, vars) ->
     t = text
@@ -95,6 +109,8 @@ window.JqAjaxCore2.Validation =
   # run the complete validation for the given form
   validateForm: (form) ->
     form = $(form)
+      
+    # check if there are any fields with errors  
     formStatus = true
     submitButton = $(form.find("input[type=submit]")) 
       
@@ -110,10 +126,9 @@ window.JqAjaxCore2.Validation =
       validationResult = JqAjaxCore2.Validation.validate<%= mode.to_s.camelize %>($(this))
       if validationResult.status == false && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>") && $(this).parents(".<%= JqajaxCore2::Validations.skip_validation_class %>").length == 0
         formStatus = false;
-        $(this).addClass("error");
-        $(this).before("<div class='error-description'>"+ validationResult.message + "</div>");
+        JqAjaxCore2.Validation.addErrorToInput($(this), validationResult.message)
       else
-        $(this).removeClass("error");
+        JqAjaxCore2.Validation.removeErrorFromInput($(this))
     <% end %>
     
     checkboxesForValidation = form.find("input.<%= JqajaxCore2::Validations.checkbox_validation_class %>")
@@ -131,7 +146,7 @@ window.JqAjaxCore2.Validation =
     if formStatus == false
       submitButton.attr("disabled", true)
       submitButton.addClass("disabled")
-      alert("Bei der Eingabe sind Fehler aufgetreten. Bitte prüfen Sie die markierten Felder.")
+      ##alert("Bei der Eingabe sind Fehler aufgetreten. Bitte prüfen Sie die markierten Felder.")
       
     return formStatus
     
@@ -144,7 +159,19 @@ window.JqAjaxCore2.Validation =
     $("form.<%= JqajaxCore2::Validations.form_validation_class %>").submit ->
     
       return JqAjaxCore2.Validation.validateForm(this)
-
+  
+  # Helper methods
+  addErrorToInput: (el, message) ->
+    # remove old error msg if present
+    if $(el).prev().hasClass("<%= JqajaxCore2::Validations.error_description_class %>")
+      $(el).prev().remove()
+      
+    $(el).addClass("error")
+    $(el).before("<div class='<%= JqajaxCore2::Validations.error_description_class %>'>"+ message + "</div>");
+  
+  removeErrorFromInput: (el) ->
+    $(el).removeClass("error")
+      
 JqAjaxCore2.ValidationErrorMessages = 
   <% JqajaxCore2::Validations.settings.each do |name, settings|  %>
     <%= name.to_s.camelize %>: '<%= settings[:message] %>'

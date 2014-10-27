@@ -1,7 +1,7 @@
 module JqajaxCore2
   class Validations
     
-    cattr_accessor :settings, :checkbox_validation_class, :skip_validation_class, :form_validation_class, :prefix,  :data_prefix
+    cattr_accessor :settings, :checkbox_validation_class, :skip_validation_class, :form_validation_class, :prefix,  :data_prefix, :error_description_class
     
     self.prefix = "#{JqajaxCore2::Config.prefix}-vld"
     self.data_prefix = "data-#{JqajaxCore2::Config.prefix}"
@@ -89,14 +89,20 @@ module JqajaxCore2
         :class => "#{self.prefix}-required-validation",
         :regexp => '/[a-zA-Z0-9]{1,}/',
         :empty => false,
-        :message => "Feld ist erforderlich"
+        :message => "Pflichtfeld"
       },
+      
+      :from_service => {
+        :class => "#{self.prefix}-from-service",
+        :data => {:url => "#"}
+      }
     }
     
     
     self.checkbox_validation_class  = "#{self.prefix}-validate-checkbox"
     self.skip_validation_class      = "#{self.prefix}-skip-validation"
     self.form_validation_class      = "#{self.prefix}-form-validation"
+    self.error_description_class    = "error-description"
   end
 end  
     
