@@ -45,6 +45,12 @@ module JqajaxCore2
         :message => "Ungültiges Datum",
       },
       
+      :datemonth => {
+        :class => "#{self.prefix}-date-month-validation",
+        :regexp => "/[0-9]{2}\.[0-9]{4}/",
+        :message => "Ungültiges Format (MM.JJJJ)",
+      },
+      
       #:date_in_future => {
       #  :class => "#{self.prefix}-date-in-future-validation",
       #  :message => "Datum darf nicht in der Vergangenheit liegen",
