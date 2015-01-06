@@ -143,7 +143,7 @@ window.JqAjaxCore2.Validation =
       else
         label.removeClass("error")
   
-    if formStatus == false
+    if formStatus == false || $(form).attr("data-has-error") == "true"
       submitButton.attr("disabled", true)
       submitButton.addClass("disabled")
       ##alert("Bei der Eingabe sind Fehler aufgetreten. Bitte prüfen Sie die markierten Felder.")
@@ -167,6 +167,9 @@ window.JqAjaxCore2.Validation =
       $(el).prev().remove()
       
     $(el).addClass("error")
+        
+    # label form as error
+    $($(el).parents("form")[0]).attr("data-has-error", "true")
     $(el).before("<div class='<%= JqajaxCore2::Validations.error_description_class %>'>"+ message + "</div>");
   
   removeErrorFromInput: (el) ->
