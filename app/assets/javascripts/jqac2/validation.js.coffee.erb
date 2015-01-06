@@ -81,6 +81,9 @@ window.JqAjaxCore2.Validation =
     value = $(el).val()
     json_url  = JqAjaxCore2.Validation.getFromServiceData(el).Url
     result = {}
+    console.log(el)
+    console.log(value)
+    console.log(json_url)
     $.ajax
       dataType: "json",
       url: json_url,
