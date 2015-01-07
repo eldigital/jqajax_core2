@@ -8,6 +8,8 @@ module JqajaxValidationHelper
       options = {}
     end    
     
+
+    
     # validierungsoptionen
     if options[:validator_options]
       options[:validator_options].each do |opt, val|

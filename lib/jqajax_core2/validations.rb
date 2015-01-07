@@ -100,7 +100,7 @@ module JqajaxCore2
       
       :from_service => {
         :class => "#{self.prefix}-from-service",
-        :data => {:url => "#"}
+        :data => {:url => "#", :additional_values => {}.to_json }
       }
     }
     

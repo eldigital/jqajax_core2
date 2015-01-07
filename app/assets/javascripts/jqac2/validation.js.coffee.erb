@@ -79,18 +79,34 @@ window.JqAjaxCore2.Validation =
   
   validateFromService: (el) ->         
     value = $(el).val()
+
     json_url  = JqAjaxCore2.Validation.getFromServiceData(el).Url
     result = {}
+    values_hash = {value: value}
+    
+    # loading additional fields
+    additional_fields = JSON.parse(JqAjaxCore2.Validation.getFromServiceData(el).AdditionalValues)
+    
+    for id, name of additional_fields
+      values_hash[name] = $("#"+id).val()
+    
+    
+    
     console.log(el)
-    console.log(value)
+    console.log(values_hash)
     console.log(json_url)
-    $.ajax
+    
+    
+    request = $.ajax
       dataType: "json",
+      method: 'POST',
       url: json_url,
-      data: {value: value},
+      data: values_hash,
       async: false
       success: (data) ->
         result = data
+    
+    console.log(request)
     
     return result
     
