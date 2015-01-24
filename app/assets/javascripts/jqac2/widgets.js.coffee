@@ -1,3 +1,4 @@
+window.JqAjaxCore2= {} if typeof(window.JqAjaxCore2) is 'undefined' 
 window.JqAjaxCore2.Widgets = 
   initSlidedownBoxes: ->
     boxes = $(".js-slide-down-box.plain")
