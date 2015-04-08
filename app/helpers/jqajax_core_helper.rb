@@ -42,7 +42,10 @@ module JqajaxCoreHelper
     options[:with] ||= :id  
 
     options[:url].merge!(options[:with] => JqajaxCore2::Config.core[:url_placeholder])
-    link_data.merge!(JqajaxCore2::Config.html_data[:target_url].to_s => (options[:scope] || main_app).url_for(options[:url]))
+    
+    url_scope = options[:scope].nil? ? main_app : options[:scope]
+    
+    link_data.merge!(JqajaxCore2::Config.html_data[:target_url].to_s => url_scope.url_for(options[:url]))
     
     # Load-Message setzen: Entweder default oder eigene Nachricht
     if options[:load_message] && (options[:load_message] != false && !options[:load_message].blank?)
