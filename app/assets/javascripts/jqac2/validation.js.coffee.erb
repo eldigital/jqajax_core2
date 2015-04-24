@@ -28,14 +28,19 @@ window.JqAjaxCore2.Validation =
     
     settings = JqAjaxCore2.Validation.getPasswordSimpleData(el)
     result = {}
-    result.status  = false
-    result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.PasswordSimple, settings)
     
-    if JqAjaxCore2.Validation.validateRequired(el) && value.length >= parseInt(settings.Length)
-      result.status = true
-      result.status = false if value.match(/[A-Za-z]/) == null
-      result.status = false if value.match(/[0-9]/) == null
-    return result
+    if value == ""
+      result.status  = true
+      return result
+    else
+      result.status  = false
+      result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.PasswordSimple, settings)
+    
+      if JqAjaxCore2.Validation.validateRequired(el) && value.length >= parseInt(settings.Length)
+        result.status = true
+        result.status = false if value.match(/[A-Za-z]/) == null
+        result.status = false if value.match(/[0-9]/) == null
+      return result
   
   validateConfirmation: (el) ->
     value = $(el).val()
