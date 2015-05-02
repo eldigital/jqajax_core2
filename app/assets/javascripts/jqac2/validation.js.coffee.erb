@@ -172,6 +172,8 @@ window.JqAjaxCore2.Validation =
       submitButton.attr("disabled", true)
       submitButton.addClass("disabled")
       ##alert("Bei der Eingabe sind Fehler aufgetreten. Bitte prüfen Sie die markierten Felder.")
+      $('html, body').animate
+        scrollTop: $($(".error-description")[0]).offset().top-100, 250
       
     return formStatus
     
