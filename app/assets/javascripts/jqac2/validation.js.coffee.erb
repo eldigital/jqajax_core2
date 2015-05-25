@@ -96,13 +96,6 @@ window.JqAjaxCore2.Validation =
     for id, name of additional_fields
       values_hash[name] = $("#"+id).val()
     
-    
-    
-    console.log(el)
-    console.log(values_hash)
-    console.log(json_url)
-    
-    
     request = $.ajax
       dataType: "json",
       method: 'POST',
@@ -172,8 +165,9 @@ window.JqAjaxCore2.Validation =
       submitButton.attr("disabled", true)
       submitButton.addClass("disabled")
       ##alert("Bei der Eingabe sind Fehler aufgetreten. Bitte prüfen Sie die markierten Felder.")
-      $('html, body').animate
-        scrollTop: $($(".error-description")[0]).offset().top-100, 250
+      if $(".error-description")[0]
+        $('html, body').animate
+          scrollTop: $($(".error-description")[0]).offset().top-100, 250
       
     return formStatus
     

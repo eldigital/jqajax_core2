@@ -35,11 +35,13 @@ module JqajaxValidationHelper
   def jqac2_validation_class_for(*vtypes)
     css = []
     vtypes.each do |vtype|
-      if JqajaxCore2::Validations.settings[vtype.to_sym]
-        css << JqajaxCore2::Validations.settings[vtype.to_sym][:class]
-      else  
-        raise ArgumentError, "Validation of type #{vtype} is not known"
-      end    
+      if !vtype.nil?
+        if JqajaxCore2::Validations.settings[vtype.to_sym]
+          css << JqajaxCore2::Validations.settings[vtype.to_sym][:class]
+        else  
+          raise ArgumentError, "Validation of type #{vtype} is not known"
+        end    
+      end  
     end
     
     return css.join(" ")
