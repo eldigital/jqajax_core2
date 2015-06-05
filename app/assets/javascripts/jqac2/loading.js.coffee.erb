@@ -46,7 +46,7 @@ window.JqAjaxCore2.Loading =
     
     @flashArea().html(html_notice)
     @flashArea().children().slideDown(500)
-    window.setTimeout('JqAjaxCore2.Loading.flashFadeOut()', 5000)
+    window.setTimeout('JqAjaxCore2.Loading.flashFadeOut()', <%= JqajaxCore2::Config.loading[:notify_display_duration] %>)
     
 
   flashFadeOut: ->

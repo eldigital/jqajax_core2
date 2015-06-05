@@ -28,7 +28,7 @@ module JqajaxCore2
       :phone_int => {
         :class => "#{self.prefix}-phone-int-validation",
         :regexp => '/\+[1-9]{1}[0-9]{1,3}\ ?[0-9\ ]{1,}/',
-        :message => "Keine gültige Telefonnummer (+xx xxx...)"
+        :message => "Keine gültige Telefonnummer (Format +xx xxx...)"
       },
     
       :zip => {
