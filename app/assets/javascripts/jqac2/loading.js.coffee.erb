@@ -22,7 +22,6 @@ window.JqAjaxCore2.Loading =
       @overlay().fadeIn(200);
     <% end %>
 
-    
   hideLoading: ->
     @overlay().fadeOut(200);
   
@@ -37,21 +36,16 @@ window.JqAjaxCore2.Loading =
   # Flash Notify Tools
   flashNoticeDisplay: (text, mode) ->
     
-    
     mode = mode || 'ok'
     text = text.replace(/\'/g, "\"")
     html_notice = "<div class='jqac2-notify " + mode + "' style='display:none'>" + text + "</div>"
     
-    
-    
     @flashArea().html(html_notice)
     @flashArea().children().slideDown(500)
     window.setTimeout('JqAjaxCore2.Loading.flashFadeOut()', <%= JqajaxCore2::Config.loading[:notify_display_duration] %>)
-    
 
   flashFadeOut: ->
     @flashArea().children().fadeOut(500)
-  
 
   loadAjaxFlashNotice: ->
   	$.getJSON '/jqca2/jqac2_flash', (data) ->
@@ -62,5 +56,3 @@ window.JqAjaxCore2.Loading =
     $('#'+div).html(JqAjaxCore2.Loading.loaderHtml.replace('{TXT}', text))
   
   loaderHtml: '<%= actionview.render "/jqajax/loader" %>'
-
-

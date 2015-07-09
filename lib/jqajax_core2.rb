@@ -37,7 +37,7 @@ JqajaxCore2::Config.overlay[:enable_on_page_unload] ||= true
 
 # div area for showing flash notice/errors
 JqajaxCore2::Config.loading[:flash_area_div]        ||= "#{p}-flash-area"
-JqajaxCore2::Config.loading[:loader_img]            ||= "ajax-loader.gif"
+JqajaxCore2::Config.loading[:loader_img]            ||= "/ajax-loader.gif"
 JqajaxCore2::Config.loading[:flash_area_position]   ||= :bottom_right
 JqajaxCore2::Config.loading[:load_message]          ||= "data-jqac2-loading"
 JqajaxCore2::Config.loading[:notify_display_duration] ||= 5000
