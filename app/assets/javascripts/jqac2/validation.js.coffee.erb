@@ -141,12 +141,13 @@ window.JqAjaxCore2.Validation =
     <% JqajaxCore2::Validations.settings.keys.each do |mode| %>
     inputsForValidation = form.find(":input.<%= JqajaxCore2::Validations.settings[mode][:class] %>")
     inputsForValidation.each ->
-      validationResult = JqAjaxCore2.Validation.validate<%= mode.to_s.camelize %>($(this))
-      if validationResult.status == false && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>") && $(this).parents(".<%= JqajaxCore2::Validations.skip_validation_class %>").length == 0
-        formStatus = false;
-        JqAjaxCore2.Validation.addErrorToInput($(this), validationResult.message)
-      else
-        JqAjaxCore2.Validation.removeErrorFromInput($(this))
+      if !$(this).is(":disabled")
+        validationResult = JqAjaxCore2.Validation.validate<%= mode.to_s.camelize %>($(this))
+        if validationResult.status == false && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>") && $(this).parents(".<%= JqajaxCore2::Validations.skip_validation_class %>").length == 0
+          formStatus = false;
+          JqAjaxCore2.Validation.addErrorToInput($(this), validationResult.message)
+        else
+          JqAjaxCore2.Validation.removeErrorFromInput($(this))
     <% end %>
     
     checkboxesForValidation = form.find("input.<%= JqajaxCore2::Validations.checkbox_validation_class %>")
