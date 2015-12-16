@@ -1,4 +1,4 @@
-window.JqAjaxCore2= {} if typeof(window.JqAjaxCore2) is 'undefined' 
+window.JqAjaxCore2= {} if typeof(window.JqAjaxCore2) is 'undefined'
 window.JqAjaxCore2.Validation =
 
 <% JqajaxCore2::Validations.settings.each do |name, settings|  %>
@@ -9,8 +9,8 @@ window.JqAjaxCore2.Validation =
     result.status = JqAjaxCore2.Validation.validateFormat(attr, <%= settings[:regexp] %>, <%= settings[:empty] == false ? 'false' : 'true' %>)
     result.message = JqAjaxCore2.ValidationErrorMessages.<%= name.to_s.camelize %>
     return result
-  <% end %>  
-  # Provide getter for data attributes defined in th 
+  <% end %>
+  # Provide getter for data attributes defined in th
   <% if settings[:data] %>
   get<%= name.to_s.camelize %>Data: (el) ->
     data = {}
@@ -18,84 +18,91 @@ window.JqAjaxCore2.Validation =
     data.<%= m.to_s.camelize %> = $(el).attr("<%= "data-#{JqajaxCore2::Validations.data_prefix}-#{m.to_s.dasherize}" %>") || "<%= d %>"
     <% end %>
     return data
-  <% end %>    
+  <% end %>
 <% end %>
-  
-  
+
+
   # Define Custom methods for complex validation
   validatePasswordSimple: (el) ->
     value = $(el).val()
-    
+
     settings = JqAjaxCore2.Validation.getPasswordSimpleData(el)
     result = {}
-    
+
     if value == ""
       result.status  = true
       return result
     else
       result.status  = false
       result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.PasswordSimple, settings)
-    
+
       if JqAjaxCore2.Validation.validateRequired(el) && value.length >= parseInt(settings.Length)
         result.status = true
         result.status = false if value.match(/[A-Za-z]/) == null
         result.status = false if value.match(/[0-9]/) == null
       return result
-  
+
   validateConfirmation: (el) ->
     value = $(el).val()
-    
+
     settings = JqAjaxCore2.Validation.getConfirmationData(el)
     result = {}
     result.status  = false
     result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.Confirmation, settings)
-    
+
     ref_value = $("#"+settings.ConfirmField).val()
-    
-    if JqAjaxCore2.Validation.validateRequired(el) && value == ref_value 
+
+    if JqAjaxCore2.Validation.validateRequired(el) && value == ref_value
       result.status = true
     return result
-  
+
   validateExact: (el) ->
     value = $(el).val()
-    
+
     settings = JqAjaxCore2.Validation.getExactData(el)
     result = {}
     result.status  = false
     result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.Exact, settings)
-    
+
     if value == settings.Value
       result.status = true
-      
-    return result 
-  
+
+    return result
+
   validateLength: (el) ->
     value = $(el).val()
 
     settings = JqAjaxCore2.Validation.getLengthData(el)
     result = {}
     result.status  = false
-    
-    result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.Length, settings)
 
-    if value.length == parseInt(JqAjaxCore2.Validation.getLengthData(el).Length)
-      result.status = true
-      
+    result.message = JqAjaxCore2.Validation.renderErrorMessage(JqAjaxCore2.ValidationErrorMessages.Length, settings)
+    length_settings = JqAjaxCore2.Validation.getLengthData(el).Length
+
+    length_range = length_settings.split("-")
+
+    if length_range.length == 1
+      if value.length == parseInt(length_range[0])
+        result.status = true
+    else
+      if value.length >= parseInt(length_range[0]) && value.length <= parseInt(length_range[1])
+        result.status = true
+
     return result
-  
-  validateFromService: (el) ->         
+
+  validateFromService: (el) ->
     value = $(el).val()
 
     json_url  = JqAjaxCore2.Validation.getFromServiceData(el).Url
     result = {}
     values_hash = {value: value}
-    
+
     # loading additional fields
     additional_fields = JSON.parse(JqAjaxCore2.Validation.getFromServiceData(el).AdditionalValues)
-    
+
     for id, name of additional_fields
       values_hash[name] = $("#"+id).val()
-    
+
     request = $.ajax
       dataType: "json",
       method: 'POST',
@@ -104,17 +111,17 @@ window.JqAjaxCore2.Validation =
       async: false
       success: (data) ->
         result = data
-    
+
     console.log(request)
-    
+
     return result
-    
+
   renderErrorMessage: (text, vars) ->
     t = text
     for attr, value of vars
       t = t.replace('['+attr+']', value)
-    return t   
-  
+    return t
+
   # Helper method for string validation with given regular expression
   validateFormat: (string, regexp, empty) ->
     if (!string || 0 == string.length) && empty == true
@@ -123,21 +130,21 @@ window.JqAjaxCore2.Validation =
       return false
     else
       return true
-  
+
   # run the complete validation for the given form
   validateForm: (form) ->
     form = $(form)
-      
-    # check if there are any fields with errors  
+
+    # check if there are any fields with errors
     formStatus = true
-    submitButton = $(form.find("input[type=submit]")) 
-      
+    submitButton = $(form.find("input[type=submit]"))
+
     $(".error-description").remove()
-  
+
     $(form.find("input")).bind 'change keydown click', ->
       submitButton.removeAttr("disabled")
       submitButton.removeClass("disabled")
-  
+
     <% JqajaxCore2::Validations.settings.keys.each do |mode| %>
     inputsForValidation = form.find(":input.<%= JqajaxCore2::Validations.settings[mode][:class] %>")
     inputsForValidation.each ->
@@ -149,19 +156,20 @@ window.JqAjaxCore2.Validation =
         else
           JqAjaxCore2.Validation.removeErrorFromInput($(this))
     <% end %>
-    
+
     checkboxesForValidation = form.find("input.<%= JqajaxCore2::Validations.checkbox_validation_class %>")
     checkboxesForValidation.each ->
     # Find the label for the checkbox
-      checkbox_id = $(this).attr("id")      
-      label = $("label[for="+checkbox_id+"]")  
-     
+      checkbox_id = $(this).attr("id")
+      label = $("label[for="+checkbox_id+"]")
+
       if !$(this).is(":checked") && !$(this).hasClass("<%= JqajaxCore2::Validations.skip_validation_class %>") && $(this).parents(".<%= JqajaxCore2::Validations.skip_validation_class %>").length == 0
         formStatus = false
         label.addClass("error")
+        alert("Bitte bestätigen Sie: " + label.text())
       else
         label.removeClass("error")
-  
+
     if formStatus == false || $(form).attr("data-has-error") == "true"
       submitButton.attr("disabled", true)
       submitButton.addClass("disabled")
@@ -169,35 +177,35 @@ window.JqAjaxCore2.Validation =
       if $(".error-description")[0]
         $('html, body').animate
           scrollTop: $($(".error-description")[0]).offset().top-100, 250
-      
+
     return formStatus
-    
-  
+
+
   # Bind validation to all forms that can be found
   initForms: ->
     $("input[class*=<%= JqajaxCore2::Validations.prefix %>]:first, :input[class^=<%= JqajaxCore2::Validations.prefix %>]:first").each ->
       $(this).closest("form").addClass("<%= JqajaxCore2::Validations.form_validation_class %>")
-    
+
     $("form.<%= JqajaxCore2::Validations.form_validation_class %>").submit ->
-    
+
       return JqAjaxCore2.Validation.validateForm(this)
-  
+
   # Helper methods
   addErrorToInput: (el, message) ->
     # remove old error msg if present
     if $(el).prev().hasClass("<%= JqajaxCore2::Validations.error_description_class %>")
       $(el).prev().remove()
-      
+
     $(el).addClass("error")
-        
+
     # label form as error
     $($(el).parents("form")[0]).attr("data-has-error", "true")
     $(el).before("<div class='<%= JqajaxCore2::Validations.error_description_class %>'>"+ message + "</div>");
-  
+
   removeErrorFromInput: (el) ->
     $(el).removeClass("error")
-      
-JqAjaxCore2.ValidationErrorMessages = 
+
+JqAjaxCore2.ValidationErrorMessages =
   <% JqajaxCore2::Validations.settings.each do |name, settings|  %>
     <%= name.to_s.camelize %>: '<%= settings[:message] %>'
-  <% end %>  
+  <% end %>
