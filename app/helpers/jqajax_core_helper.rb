@@ -118,7 +118,10 @@ module JqajaxCoreHelper
   end
 
   def submit_from_options(options = {})
-    options[:submit] ? {JqajaxCore2::Config.html_data[:submit_data] => options[:submit]} : {}
+    options[:submit] ? {
+      JqajaxCore2::Config.html_data[:submit_data] => options[:submit],
+      :method => "POST"
+    } : {}
   end
 
   def update_div_from_options(options = {})
