@@ -116,7 +116,6 @@ module JqajaxCore2
       }
     }
 
-
     self.checkbox_validation_class  = "#{self.prefix}-validate-checkbox"
     self.skip_validation_class      = "#{self.prefix}-skip-validation"
     self.form_validation_class      = "#{self.prefix}-form-validation"
