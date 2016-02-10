@@ -7,14 +7,14 @@ Gem::Specification.new do |spec|
   spec.summary       = "Makes Rails Ajax easy"
   spec.homepage      = "https://github.com/friendssystems/jqajax_core2"
   spec.license       = "MIT"
-  
+
   spec.files        = [Dir.glob("lib/**/*"), Dir.glob("app/**/*"), Dir.glob("config/**/*")].flatten
 
   # dependencies
   spec.add_runtime_dependency 'jquery-rails'
   spec.add_runtime_dependency 'jquery-ui-rails'
   spec.add_runtime_dependency 'coffee-rails'
-  spec.add_runtime_dependency  'sass-rails', "~> 4.0"
+  spec.add_runtime_dependency  'sass-rails'
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
 end
