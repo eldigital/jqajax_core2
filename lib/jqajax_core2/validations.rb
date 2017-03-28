@@ -31,6 +31,18 @@ module JqajaxCore2
         :message => "Keine gültige Telefonnummer (Format +xx xxx...)"
       },
 
+      :letters_only => {
+        class: "#{self.prefix}-letters-validation",
+        regexp: '/^[A-z\ ]+$/',
+        message: "Nur Buchstaben und Leerzeichen"
+      },
+
+      :alphanumeric => {
+        class: "#{self.prefix}-alphanum-validation",
+        regexp: '/^[A-z0-9\ ]+$/',
+        message: "Nur Buchstaben, Zahlen und Leerzeichen"
+      },
+
       :zip => {
         :class => "#{self.prefix}-zip-validation",
         :regexp => '/[0-9]{4,5}/',
