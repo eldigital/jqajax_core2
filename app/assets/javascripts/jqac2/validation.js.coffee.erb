@@ -146,7 +146,7 @@ window.JqAjaxCore2.Validation =
       submitButton.removeClass("disabled")
 
     <% JqajaxCore2::Validations.settings.keys.each do |mode| %>
-    inputsForValidation = form.find(":input.<%= JqajaxCore2::Validations.settings[mode][:class] %>")
+    inputsForValidation = form.find(":input.<%= JqajaxCore2::Validations.settings[mode][:class] %>").not("[type='hidden']")
     inputsForValidation.each ->
       if !$(this).is(":disabled")
         validationResult = JqAjaxCore2.Validation.validate<%= mode.to_s.camelize %>($(this))
