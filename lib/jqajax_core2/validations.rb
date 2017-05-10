@@ -1,7 +1,7 @@
 module JqajaxCore2
   class Validations
 
-    cattr_accessor :settings, :checkbox_validation_class, :skip_validation_class, :form_validation_class, :prefix,  :data_prefix, :error_description_class
+    cattr_accessor :settings, :checkbox_validation_class, :skip_validation_class, :form_validation_class, :prefix,  :data_prefix, :error_description_class, :validation_description_class
 
     self.prefix = "#{JqajaxCore2::Config.prefix}-vld"
     self.data_prefix = "data-#{JqajaxCore2::Config.prefix}"
@@ -46,7 +46,7 @@ module JqajaxCore2
       :zip => {
         :class => "#{self.prefix}-zip-validation",
         :regexp => '/[0-9]{4,5}/',
-        :message => "Ungültige PLZ",
+        :message => "Ungültige PLZ"
       },
 
       :number => {
@@ -60,7 +60,7 @@ module JqajaxCore2
         :class => "#{self.prefix}-date-validation",
         # TODO: Regexp does not catch fake dates like 99.99.9999
         :regexp => "/([0-9]{2}\.[0-9]{2}\.[0-9]{4})|([0-9]{4}-[0-9]{2}-[0-9]{2})/",
-        :message => "Ungültiges Datum",
+        :message => "Ungültiges Datum"
       },
 
       :datemonth => {
@@ -132,5 +132,6 @@ module JqajaxCore2
     self.skip_validation_class      = "#{self.prefix}-skip-validation"
     self.form_validation_class      = "#{self.prefix}-form-validation"
     self.error_description_class    = "error-description"
+    self.validation_description_class = "validation-description"
   end
 end

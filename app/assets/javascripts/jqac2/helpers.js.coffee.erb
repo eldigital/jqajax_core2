@@ -1,27 +1,30 @@
-window.JqAjaxCore2= {} if typeof(window.JqAjaxCore2) is 'undefined' 
+window.JqAjaxCore2= {} if typeof(window.JqAjaxCore2) is 'undefined'
 window.JqAjaxCore2.Helpers =
 
 linkOptionsFromElement: (item) =>
   # Item is passed as $() object
   item = $(item)
   link_options = {};
-  
+
   link_options['target_div']        =   item.attr('<%= JqajaxCore2::Config.core[:update_div] %>')       || '<%= JqajaxCore2::Config.core[:ajax_content_container_id] %>'
   link_options['load_message']      =   item.attr('<%= JqajaxCore2::Config.loading[:load_message] %>')  || ''
   link_options['submit_data']       =   item.attr('<%= JqajaxCore2::Config.html_data[:submit_data] %>') || ''
   link_options['callback']          =   item.attr('<%= JqajaxCore2::Config.html_data[:callback] %>')    || ''
   link_options['append']            =   item.attr('<%= JqajaxCore2::Config.html_data[:append] %>') ? true : false
-  
-  # Checking for confirmation 
+
+  # Checking for confirmation
   link_options['confirm_message']   =   (item.attr('<%= JqajaxCore2::Config.html_data[:confirm] %>')  || '')
   link_options['confirm']           =   link_options['confirm_message'] != ''
-  
+
   return link_options
-  
+
 
 # Element ausblenden - verwendung als Callback nach löschen etc...
 hideItem: (id) ->
   $("#"+id).fadeOut(300);
+
+assignTooltipDimensions: (el) ->
+  $(el).css({width: $(el).width()+'px', height: $(el).height()+'px', display: 'none', opacity: 0})
 
 
 

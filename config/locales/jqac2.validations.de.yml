@@ -1,0 +1,12 @@
+de:
+  jqac2:
+    validations:
+      hints:
+        phone_int: 'Telefonnummer im intl. Format: +xx xxx...'
+        letters_only: 'Nur Buchstaben (A-Z) und Leerzeichen'
+        alphanumeric: 'Nur Buchstaben (A-Z), Zahlen (0-9) und Leerzeichen'
+        zip: 'Postleitzahl, 4-5-stellige Nummer, führende "0" erlaubt'
+        date: 'Datum im Format TT.MM.JJJJ'
+        datemonth: 'Datum im Format MM.JJJJ'
+        datetime: 'Datum/Uhrzeit im Format DD.MM.YYYY HH:MM'
+        required: 'Pflichtfeld'

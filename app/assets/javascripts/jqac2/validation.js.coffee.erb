@@ -183,8 +183,27 @@ window.JqAjaxCore2.Validation =
 
   # Bind validation to all forms that can be found
   initForms: ->
-    $("input[class*=<%= JqajaxCore2::Validations.prefix %>]:first, :input[class^=<%= JqajaxCore2::Validations.prefix %>]:first").each ->
-      $(this).closest("form").addClass("<%= JqajaxCore2::Validations.form_validation_class %>")
+
+    main_selector = "[class*=<%= JqajaxCore2::Validations.prefix %>]"
+
+    for field in $("input"+main_selector+":first, :input"+main_selector+":first")
+      $(field).closest("form").addClass("<%= JqajaxCore2::Validations.form_validation_class %>")
+
+    for field in $("input"+main_selector+", :input"+main_selector)
+      wrapper_class = "<%= JqajaxCore2::Validations.prefix %>-wrapper"
+
+      if $(field).attr('data-wrapper-class')
+        wrapper_class = wrapper_class + ' ' + $(field).attr('data-wrapper-class')
+
+      $(field).wrap('<span class="'+ wrapper_class + '"></span>')
+      <% if JqajaxCore2::Config.core[:show_validation_hints] == true %>
+      if $(field).attr('data-validation-messages')
+        messages_converted = $(field).attr('data-validation-messages').split(";").join("<br />")
+        $(field).before("<div data-<%= JqajaxCore2::Config.prefix %>-validation-hint class='<%= JqajaxCore2::Validations.validation_description_class %>'><span class='validation_tooltip'>"+ messages_converted + "</span></div>");
+        if $(field).is(':visible') == false
+          $(field).prev().hide()
+        JqAjaxCore2.Helpers.assignTooltipDimensions($(field).prev().find(".validation_tooltip"))
+      <% end %>
 
     $("form.<%= JqajaxCore2::Validations.form_validation_class %>").submit ->
 
@@ -197,13 +216,19 @@ window.JqAjaxCore2.Validation =
       $(el).prev().remove()
 
     $(el).addClass("error")
+    $(el).parent().addClass("error")
 
     # label form as error
     $($(el).parents("form")[0]).attr("data-has-error", "true")
-    $(el).before("<div class='<%= JqajaxCore2::Validations.error_description_class %>'>"+ message + "</div>");
+    $(el).before("<div data-<%= JqajaxCore2::Config.prefix %>-error-indicator class='<%= JqajaxCore2::Validations.error_description_class %>'><span class='error_tooltip'>"+ message + "</span></div>");
+    JqAjaxCore2.Helpers.assignTooltipDimensions($(el).prev().find(".error_tooltip"))
 
   removeErrorFromInput: (el) ->
     $(el).removeClass("error")
+    $(el).parent().removeClass("error")
+
+
+
 
 JqAjaxCore2.ValidationErrorMessages =
   <% JqajaxCore2::Validations.settings.each do |name, settings|  %>

@@ -13,16 +13,19 @@ JqajaxCore2::Config.core[:no_ajax_link_class] ||= "#{p}-not-loaded"
 JqajaxCore2::Config.core[:select_onchange_selector]   ||= "#{p}-select-onchange"
 
 # HTML data-Attribute for specifing the div to be updated
-JqajaxCore2::Config.core[:update_div] ||= "data-jqac2-update-element"  
+JqajaxCore2::Config.core[:update_div] ||= "data-jqac2-update-element"
 
 # id name of the main Ajax Overlay Container
-JqajaxCore2::Config.core[:ajax_content_container_id] ||= "jqac2-ajax-content"  
+JqajaxCore2::Config.core[:ajax_content_container_id] ||= "jqac2-ajax-content"
 
 # Placeholder string in URLS
 JqajaxCore2::Config.core[:url_placeholder]  ||= ".-."
 
 # Confirmation
 JqajaxCore2::Config.core[:confirm_default]  ||= "Sind Sie sicher das Sie fortfahren möchten?"
+
+# Hinweise für Validierte Felder zeigen?
+JqajaxCore2::Config.core[:show_validation_hints] ||= false
 
 #== Overlay and Loader Settings
 JqajaxCore2::Config.overlay[:div_id]      ||= "#{p}-overlay"
